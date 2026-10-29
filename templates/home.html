@@ -1,0 +1,1353 @@
+{% extends "base.html" %}
+{% block title %}Vaibhav Garments | Fashion, Beauty & Cosmetics{% endblock %}
+
+{% block content %}
+
+<!-- PREMIUM HERO SECTION -->
+<section class="vg-hero">
+    <div class="vg-hero-copy">
+        
+
+        <div class="vg-eyebrow">
+            <span class="vg-line"></span>
+            NEW COLLECTION · NEW STYLE
+        </div>
+
+        <h1>
+            Style that<br>
+            <span>speaks for you.</span>
+        </h1>
+
+        <p class="vg-hero-description">
+            Discover fashion for Ladies, Men and Kids, plus beauty and cosmetics essentials for your everyday style.
+        </p>
+
+        <div class="vg-hero-buttons">
+            <a href="#collection" class="vg-btn vg-btn-gold">
+                Shop collection <span>→</span>
+            </a>
+
+            <a href="https://wa.me/{{ whatsapp_number }}"
+               class="vg-btn vg-btn-outline"
+               target="_blank"
+               rel="noopener noreferrer">
+                Contact us
+            </a>
+        </div>
+
+        <div class="vg-hero-perks">
+            <span>♡ &nbsp; Quality styles</span>
+            <span class="vg-perk-divider"></span>
+            <span>◉ &nbsp; Easy WhatsApp orders</span>
+        </div>
+    </div>
+
+    <!-- FAMILY PHOTO -->
+    <div class="vg-hero-visual">
+        <div class="vg-photo-halo"></div>
+        <div class="vg-photo-frame">
+            <img
+                src="{{ url_for('static', filename='uploads/family.png') }}"
+                alt="Vaibhav Garments family fashion collection"
+                fetchpriority="high">
+        </div>
+
+        <span class="vg-gold-dot vg-dot-one"></span>
+        <span class="vg-gold-dot vg-dot-two"></span>
+
+        <div class="vg-photo-badge">
+            <small>VAIBHAV GARMENTS</small>
+            <span class="vg-badge-line"></span>
+            <strong>Fashion for<br>every moment.</strong>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST POINTS -->
+<section class="vg-trust-strip">
+    <div class="vg-trust-item">
+        <span class="vg-trust-icon">✧</span>
+        <div>
+            <strong>Quality styles</strong>
+            <small>Picked for everyday wear</small>
+        </div>
+    </div>
+
+    <div class="vg-trust-item">
+        <span class="vg-trust-icon">↗</span>
+        <div>
+            <strong>Order on WhatsApp</strong>
+            <small>Simple and convenient</small>
+        </div>
+    </div>
+
+    <div class="vg-trust-item">
+        <span class="vg-trust-icon">♡</span>
+        <div>
+            <strong>Personal assistance</strong>
+            <small>Help with sizes and colours</small>
+        </div>
+    </div>
+</section>
+
+<!-- COLLECTIONS -->
+<section class="section-block vg-collections" id="collection">
+    <div class="vg-section-heading">
+        <div>
+            <span class="vg-section-label">FASHION &amp; BEAUTY</span>
+            <h2>Explore our collections</h2>
+            <p>Find your style, discover your glow.</p>
+        </div>
+    </div>
+
+    <div class="category-cards">
+
+        <a class="category-card fashion-category"
+           href="{{ url_for('home', category='Women') }}">
+            <div class="category-photo">
+                <img
+                    src="{{ url_for('static', filename='uploads/women.jpeg') }}"
+                    alt="Ladies clothing collection"
+                    loading="lazy">
+                <span class="photo-title">LADIES</span>
+            </div>
+            <div class="category-info">
+                <h3>Ladies Wear</h3>
+                <p>Elegant styles for every occasion.</p>
+                <span class="category-link">Explore collection ↗</span>
+            </div>
+        </a>
+
+        <a class="category-card fashion-category"
+           href="{{ url_for('home', category='Men') }}">
+            <div class="category-photo">
+                <img
+                    src="{{ url_for('static', filename='uploads/men.jpeg') }}"
+                    alt="Men clothing collection"
+                    loading="lazy">
+                <span class="photo-title">MEN</span>
+            </div>
+            <div class="category-info">
+                <h3>Men's Wear</h3>
+                <p>Smart looks for everyday confidence.</p>
+                <span class="category-link">Explore collection ↗</span>
+            </div>
+        </a>
+
+        <a class="category-card fashion-category"
+           href="{{ url_for('home', category='Kids') }}">
+            <div class="category-photo">
+                <img
+                    src="{{ url_for('static', filename='uploads/kids.jpeg') }}"
+                    alt="Kids clothing collection"
+                    loading="lazy">
+                <span class="photo-title">KIDS</span>
+            </div>
+            <div class="category-info">
+                <h3>Kids' Wear</h3>
+                <p>Comfortable looks for little ones.</p>
+                <span class="category-link">Explore collection ↗</span>
+            </div>
+        </a>
+
+        <!-- COSMETICS -->
+        <a class="category-card fashion-category"
+           href="{{ url_for('home', category='Beauty') }}">
+            <div class="category-photo">
+                <img
+                    src="{{ url_for('static', filename='uploads/cosmetics.jpeg') }}"
+                    alt="Beauty and cosmetics collection"
+                    loading="lazy">
+                <span class="photo-title">COSMETICS</span>
+            </div>
+            <div class="category-info">
+                <h3>Beauty &amp; Cosmetics</h3>
+                <p>Beauty essentials for your everyday glow.</p>
+                <span class="category-link">Explore collection ↗</span>
+            </div>
+        </a>
+
+    </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section-block vg-products" id="products">
+    <div class="vg-section-heading vg-products-heading">
+        <div>
+            <span class="vg-section-label">
+                {% if selected_category %}
+                    {{ selected_category|upper }} COLLECTION
+                {% elif search %}
+                    SEARCH RESULTS
+                {% else %}
+                    OUR LATEST STYLES
+                {% endif %}
+            </span>
+
+            <h2>
+                {% if search %}
+                    Results for "{{ search }}"
+                {% elif selected_category %}
+                    Shop {{ selected_category }}
+                {% else %}
+                    Styles you'll love
+                {% endif %}
+            </h2>
+
+            <p>See something you like? Order directly on WhatsApp.</p>
+        </div>
+
+        <div class="product-filters">
+            <a class="{{ 'selected' if not selected_category else '' }}"
+               href="{{ url_for('home') }}">All</a>
+            <a class="{{ 'selected' if selected_category == 'Women' else '' }}"
+               href="{{ url_for('home', category='Women') }}">Ladies</a>
+            <a class="{{ 'selected' if selected_category == 'Men' else '' }}"
+               href="{{ url_for('home', category='Men') }}">Men</a>
+            <a class="{{ 'selected' if selected_category == 'Kids' else '' }}"
+               href="{{ url_for('home', category='Kids') }}">Kids</a>
+            <a class="{{ 'selected' if selected_category == 'Beauty' else '' }}"
+               href="{{ url_for('home', category='Beauty') }}">Cosmetics</a>
+        </div>
+    </div>
+
+    {% if products %}
+    <div class="product-grid">
+        {% for product in products %}
+        <article class="product-card">
+
+            <a class="product-image"
+               href="{{ url_for('product_detail', product_id=product.id) }}">
+
+                {% if product.image %}
+                <img
+                    src="{{ url_for('static', filename='uploads/' + product.image) }}"
+                    alt="{{ product.name }}"
+                    loading="lazy">
+                {% else %}
+                <div class="placeholder-art {{ product.category|lower }}">
+                    <span>
+                        {{ '👗' if product.category == 'Women'
+                           else ('👔' if product.category == 'Men'
+                           else ('💄' if product.category in ['Beauty', 'Cosmetics'] else '🧸')) }}
+                    </span>
+                    <small>{{ product.category|upper }} STYLE</small>
+                </div>
+                {% endif %}
+
+                {% if product.featured %}
+                <span class="product-badge">FEATURED</span>
+                {% endif %}
+            </a>
+
+            <div class="product-info">
+                <span class="product-category">{{ product.category }}</span>
+
+                <a class="product-name"
+                   href="{{ url_for('product_detail', product_id=product.id) }}">
+                    {{ product.name }}
+                </a>
+
+                <div class="price-row">
+                    <strong>₹{{ '%.0f'|format(product.price) }}</strong>
+
+                    {% if product.old_price and product.old_price > product.price %}
+                    <del>₹{{ '%.0f'|format(product.old_price) }}</del>
+                    <span class="discount">
+                        {{ ((product.old_price-product.price)/product.old_price*100)|round|int }}% off
+                    </span>
+                    {% endif %}
+                </div>
+
+                
+<div class="product-actions">
+
+    <button type="button"
+            class="add-to-cart-btn"
+            data-id="{{ product.id }}"
+            data-name="{{ product.name|e }}"
+            data-price="{{ product.price }}"
+            data-image="{{ url_for('static', filename='uploads/' + product.image) if product.image else '' }}"
+            data-url="{{ url_for('product_detail', product_id=product.id) }}">
+        🛒 Add to Cart
+    </button>
+
+    <a class="btn btn-blue product-buy"
+       href="{{ url_for('order_product', product_id=product.id) }}">
+        Order on WhatsApp ↗
+    </a>
+
+</div>
+
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="vg-empty-state">
+        <span>♡</span>
+        <h3>No products to show yet</h3>
+        <p>Try another category or check back for new styles.</p>
+        <a class="vg-btn vg-btn-gold" href="{{ url_for('home') }}">
+            Explore all styles →
+        </a>
+    </div>
+    {% endif %}
+</section>
+
+<!-- WHATSAPP CONTACT BANNER -->
+<section class="vg-contact-banner">
+    <div class="vg-contact-symbol">♡</div>
+
+    <div class="vg-contact-copy">
+        <span class="vg-section-label">NEED A LITTLE HELP?</span>
+        <h2>Let's find your perfect look.</h2>
+        <p>Ask us about sizes, colours, fabric and availability.</p>
+    </div>
+
+    <a class="vg-btn vg-btn-gold"
+       href="https://wa.me/{{ whatsapp_number }}"
+       target="_blank"
+       rel="noopener noreferrer">
+        Chat with us ↗
+    </a>
+</section>
+
+<style>
+/* =========================================
+   VAIBHAV GARMENTS — PREMIUM HOME DESIGN
+   Navy + Royal Blue + Champagne Gold
+========================================= */
+
+.vg-hero,
+.vg-hero * {
+    box-sizing: border-box;
+}
+
+.vg-hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: 0.94fr 1.06fr;
+    align-items: stretch;
+    min-height: 390px;
+    margin: 4px 0 22px;
+    overflow: hidden;
+    border: 1px solid #e3eaf5;
+    border-radius: 25px;
+    background:
+        radial-gradient(ellipse at 100% 0%, #fff8d9 0%, transparent 45%),
+        linear-gradient(115deg, #ffffff 0%, #f5f9ff 56%, #eef5ff 100%);
+    box-shadow: 0 12px 34px rgba(23, 49, 83, 0.055);
+}
+
+.vg-hero-copy {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 30px 18px 30px 36px;
+}
+
+.vg-mini-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 26px;
+    color: #102c50;
+    text-decoration: none;
+}
+
+.vg-monogram {
+    display: grid;
+    place-items: center;
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #f4c744;
+    color: #12355c;
+    font-family: Georgia, serif;
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -2px;
+}
+
+.vg-mini-brand strong {
+    display: block;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 14px;
+    letter-spacing: 0.25px;
+}
+
+.vg-mini-brand small {
+    display: block;
+    margin-top: 5px;
+    color: #b48a16;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.vg-eyebrow,
+.vg-section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #ad8411;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.vg-line {
+    width: 25px;
+    height: 2px;
+    background: #e9bd32;
+}
+
+.vg-hero h1 {
+    margin: 17px 0 13px;
+    color: #112e50;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(38px, 3.4vw, 53px);
+    font-weight: 700;
+    line-height: 0.99;
+    letter-spacing: -1.8px;
+}
+
+.vg-hero h1 span {
+    color: #2874f0;
+}
+
+.vg-hero-description {
+    max-width: 390px;
+    margin: 0;
+    color: #63758b;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.vg-hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 19px;
+}
+
+.vg-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 41px;
+    padding: 0 17px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 750;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vg-btn:hover {
+    transform: translateY(-2px);
+}
+
+.vg-btn-gold {
+    border: 1px solid #edc22c;
+    background: linear-gradient(135deg, #ffdc54, #f1c32c);
+    color: #132e4c;
+    box-shadow: 0 5px 12px rgba(219, 171, 26, 0.12);
+}
+
+.vg-btn-outline {
+    border: 1px solid #cfdbed;
+    background: rgba(255,255,255,0.8);
+    color: #183654;
+}
+
+.vg-hero-perks {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+    color: #60748c;
+    font-size: 10px;
+}
+
+.vg-perk-divider {
+    width: 1px;
+    height: 16px;
+    background: #d4dce8;
+}
+
+/* IMAGE AREA */
+.vg-hero-visual {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    min-height: 390px;
+    padding: 24px 22px 24px 0;
+    isolation: isolate;
+    background:
+        radial-gradient(ellipse at 85% 15%, rgba(255, 232, 137, 0.36), transparent 40%),
+        linear-gradient(135deg, #eaf3ff, #fff9e2);
+}
+
+.vg-photo-halo {
+    position: absolute;
+    z-index: -1;
+    width: 80%;
+    height: 88%;
+    border-radius: 47% 53% 44% 56% / 42% 42% 58% 58%;
+    background: rgba(184, 215, 255, 0.62);
+    transform: rotate(-5deg);
+}
+
+.vg-photo-frame {
+    position: relative;
+    width: 86%;
+    height: 330px;
+    overflow: hidden;
+    border: 7px solid rgba(255,255,255,0.9);
+    border-radius: 48% 48% 35% 35% / 30% 30% 23% 23%;
+    background: #dceafa;
+    box-shadow: 0 15px 35px rgba(31, 64, 105, 0.14);
+    transform: rotate(1.5deg);
+}
+
+.vg-photo-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    transform: scale(1.02);
+}
+
+.vg-gold-dot {
+    position: absolute;
+    z-index: 2;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #f3c83c;
+    box-shadow: 0 3px 10px rgba(201, 157, 30, 0.15);
+}
+
+.vg-dot-one {
+    top: 13%;
+    left: 11%;
+}
+
+.vg-dot-two {
+    right: 12%;
+    bottom: 15%;
+    width: 10px;
+    height: 10px;
+}
+
+.vg-photo-badge {
+    position: absolute;
+    right: 5%;
+    bottom: 10%;
+    z-index: 3;
+    padding: 16px 18px;
+    border: 1px solid rgba(255,255,255,0.8);
+    border-radius: 15px;
+    background: #fff4ca;
+    box-shadow: 0 10px 24px rgba(36, 57, 81, 0.12);
+    color: #153657;
+}
+
+.vg-photo-badge small {
+    display: block;
+    margin-bottom: 8px;
+    color: #92700f;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.vg-photo-badge strong {
+    display: block;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    line-height: 1.25;
+}
+
+.vg-badge-line {
+    display: block;
+    width: 25px;
+    height: 2px;
+    margin-bottom: 9px;
+    background: #e5b92d;
+}
+
+/* BENEFITS */
+.vg-trust-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 45px;
+}
+
+.vg-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid #e6ebf3;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.vg-trust-icon {
+    display: grid;
+    place-items: center;
+    width: 39px;
+    height: 39px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    background: #edf4ff;
+    color: #2874f0;
+    font-size: 20px;
+}
+
+.vg-trust-item strong,
+.vg-trust-item small {
+    display: block;
+}
+
+.vg-trust-item strong {
+    color: #172d49;
+    font-size: 12px;
+}
+
+.vg-trust-item small {
+    margin-top: 4px;
+    color: #8290a3;
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+/* SECTION HEADINGS */
+.vg-collections,
+.vg-products {
+    margin-top: 30px;
+    margin-bottom: 42px;
+}
+
+.vg-section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 20px;
+}
+
+.vg-section-heading h2,
+.vg-contact-copy h2 {
+    margin: 8px 0 6px;
+    color: #142e4c;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(24px, 2.5vw, 31px);
+    line-height: 1.15;
+}
+
+.vg-section-heading p,
+.vg-contact-copy p {
+    margin: 0;
+    color: #7b899a;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+/* COLLECTION CARDS */
+.category-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.fashion-category {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #e5eaf2;
+    border-radius: 17px;
+    background: #fff;
+    text-decoration: none;
+    box-shadow: 0 5px 20px rgba(20, 45, 76, 0.045);
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.fashion-category:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 13px 26px rgba(20, 45, 76, 0.1);
+}
+
+.category-photo {
+    position: relative;
+    aspect-ratio: 4 / 4.3;
+    overflow: hidden;
+    background: #edf3fa;
+}
+
+.category-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    transition: transform 0.35s ease;
+}
+
+.fashion-category:hover .category-photo img {
+    transform: scale(1.04);
+}
+
+.category-photo::after {
+    position: absolute;
+    inset: 48% 0 0;
+    background: linear-gradient(transparent, rgba(10, 27, 48, 0.55));
+    content: "";
+}
+
+.photo-title {
+    position: absolute;
+    z-index: 1;
+    bottom: 16px;
+    left: 17px;
+    color: #fff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.category-info {
+    padding: 16px;
+}
+
+.category-info h3 {
+    margin: 0 0 5px;
+    color: #172d49;
+    font-size: 16px;
+}
+
+.category-info p {
+    margin: 0 0 12px;
+    color: #7b899a;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.category-link {
+    color: #2874f0;
+    font-size: 12px;
+    font-weight: 750;
+}
+
+/* PRODUCT FILTERS */
+.product-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.product-filters a {
+    padding: 8px 13px;
+    border: 1px solid #dfe6f0;
+    border-radius: 20px;
+    background: #fff;
+    color: #50657d;
+    font-size: 11px;
+    text-decoration: none;
+}
+
+.product-filters a.selected {
+    border-color: #2874f0;
+    background: #2874f0;
+    color: #fff;
+}
+
+/* PRODUCT GRID: preserves existing product functionality */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.product-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid #e4eaf2;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(20, 45, 76, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(20, 45, 76, 0.09);
+}
+
+.product-image {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 4.5;
+    overflow: hidden;
+    background: #f0f4fa;
+}
+
+.product-image > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image > img {
+    transform: scale(1.035);
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 6px 9px;
+    border-radius: 6px;
+    background: #fff2bf;
+    color: #7e5e00;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.product-info {
+    padding: 13px;
+}
+
+.product-category {
+    display: block;
+    margin-bottom: 5px;
+    color: #2874f0;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.product-name {
+    display: block;
+    overflow: hidden;
+    color: #172d49;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+}
+
+.price-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 10px 0 13px;
+}
+
+.price-row strong {
+    color: #142e4c;
+    font-size: 17px;
+}
+
+.price-row del {
+    color: #a0a9b5;
+    font-size: 11px;
+}
+
+.discount {
+    color: #16835d;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.product-buy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 8px;
+    border-radius: 8px;
+    background: #2874f0;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 750;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* EMPTY STATE */
+.vg-empty-state {
+    padding: 38px 18px;
+    border: 1px dashed #d7e1ef;
+    border-radius: 16px;
+    background: #fff;
+    text-align: center;
+}
+
+.vg-empty-state > span {
+    color: #e7bd35;
+    font-size: 34px;
+}
+
+.vg-empty-state h3 {
+    margin: 10px 0 6px;
+    color: #173451;
+}
+
+.vg-empty-state p {
+    margin: 0 0 18px;
+    color: #7b899a;
+    font-size: 12px;
+}
+
+/* CONTACT BANNER */
+.vg-contact-banner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 40px 0 24px;
+    padding: 23px 25px;
+    border: 1px solid #e5eaf2;
+    border-radius: 18px;
+    background: linear-gradient(110deg, #fff 0%, #f0f6ff 68%, #fff8dc 100%);
+}
+
+.vg-contact-symbol {
+    display: grid;
+    place-items: center;
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    border-radius: 15px;
+    background: #fff0b7;
+    color: #173451;
+    font-size: 28px;
+}
+
+.vg-contact-copy {
+    flex: 1;
+    min-width: 0;
+}
+
+.vg-contact-copy h2 {
+    font-size: 23px;
+}
+
+.vg-contact-banner > .vg-btn {
+    flex-shrink: 0;
+}
+
+/* RESPONSIVE TABLET */
+@media (max-width: 900px) {
+    .category-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .vg-hero {
+        grid-template-columns: 1fr 0.9fr;
+        min-height: 350px;
+    }
+
+    .vg-hero-copy {
+        padding: 25px 10px 25px 24px;
+    }
+
+    .vg-hero h1 {
+        font-size: clamp(34px, 5vw, 44px);
+    }
+
+    .vg-hero-visual {
+        min-height: 350px;
+        padding-right: 12px;
+    }
+
+    .vg-photo-frame {
+        width: 88%;
+        height: 285px;
+    }
+
+    .vg-photo-badge {
+        right: 3%;
+        bottom: 7%;
+        padding: 12px;
+    }
+
+    .vg-photo-badge strong {
+        font-size: 15px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 620px) {
+    .vg-hero {
+        grid-template-columns: 1fr;
+        margin-top: 0;
+        border-radius: 19px;
+    }
+
+    .vg-hero-copy {
+        padding: 23px 20px 20px;
+    }
+
+    .vg-mini-brand {
+        gap: 9px;
+        margin-bottom: 23px;
+    }
+
+    .vg-monogram {
+        width: 39px;
+        height: 39px;
+        font-size: 21px;
+    }
+
+    .vg-mini-brand strong {
+        font-size: 12px;
+    }
+
+    .vg-mini-brand small {
+        font-size: 8px;
+        letter-spacing: 1.5px;
+    }
+
+    .vg-eyebrow {
+        font-size: 9px;
+        letter-spacing: 1.5px;
+    }
+
+    .vg-hero h1 {
+        margin-top: 14px;
+        font-size: clamp(37px, 10vw, 48px);
+        letter-spacing: -1.4px;
+    }
+
+    .vg-hero-description {
+        max-width: 100%;
+        font-size: 12px;
+        line-height: 1.75;
+    }
+
+    .vg-hero-buttons {
+        gap: 8px;
+        margin-top: 17px;
+    }
+
+    .vg-btn {
+        min-height: 39px;
+        padding: 0 13px;
+        font-size: 11px;
+    }
+
+    .vg-hero-perks {
+        gap: 9px;
+        margin-top: 16px;
+        font-size: 9px;
+    }
+
+    .vg-hero-visual {
+        min-height: 265px;
+        padding: 15px 18px 24px;
+        border-radius: 0 0 18px 18px;
+    }
+
+    .vg-photo-halo {
+        width: 83%;
+        height: 87%;
+    }
+
+    .vg-photo-frame {
+        width: 77%;
+        height: 245px;
+        border-width: 5px;
+        border-radius: 48% 48% 32% 32% / 28% 28% 22% 22%;
+    }
+
+    .vg-photo-frame img {
+        object-position: center 30%;
+    }
+
+    .vg-photo-badge {
+        right: 3%;
+        bottom: 9%;
+        padding: 11px 12px;
+        border-radius: 12px;
+    }
+
+    .vg-photo-badge small {
+        font-size: 7px;
+        letter-spacing: 1px;
+    }
+
+    .vg-photo-badge strong {
+        font-size: 14px;
+    }
+
+    .vg-dot-one {
+        top: 12%;
+        left: 9%;
+        width: 11px;
+        height: 11px;
+    }
+
+    .vg-trust-strip {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-bottom: 32px;
+    }
+
+    .vg-trust-item {
+        padding: 12px;
+    }
+
+    .vg-trust-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .vg-collections,
+    .vg-products {
+        margin-top: 27px;
+        margin-bottom: 32px;
+    }
+
+    .vg-section-heading {
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .vg-section-heading h2 {
+        font-size: 25px;
+    }
+
+    .category-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 11px;
+    }
+
+    .category-photo {
+        aspect-ratio: 4 / 4.8;
+    }
+
+    .photo-title {
+        bottom: 11px;
+        left: 11px;
+        font-size: 18px;
+    }
+
+    .category-info {
+        padding: 12px;
+    }
+
+    .category-info h3 {
+        font-size: 13px;
+    }
+
+    .category-info p,
+    .category-link {
+        font-size: 10px;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+    .product-info {
+        padding: 10px;
+    }
+
+    .product-name {
+        font-size: 12px;
+    }
+
+    .price-row {
+        gap: 5px;
+        margin: 8px 0 10px;
+    }
+
+    .price-row strong {
+        font-size: 15px;
+    }
+
+    .product-buy {
+        min-height: 35px;
+        font-size: 10px;
+    }
+
+    .product-filters {
+        gap: 5px;
+    }
+
+    .product-filters a {
+        padding: 7px 10px;
+        font-size: 10px;
+    }
+
+    .vg-contact-banner {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 18px;
+        border-radius: 15px;
+    }
+
+    .vg-contact-symbol {
+        width: 42px;
+        height: 42px;
+        font-size: 23px;
+    }
+
+    .vg-contact-copy {
+        flex-basis: calc(100% - 58px);
+    }
+
+    .vg-contact-copy h2 {
+        font-size: 21px;
+    }
+
+    .vg-contact-banner > .vg-btn {
+        width: 100%;
+    }
+}
+
+/* SMALL PHONES */
+@media (max-width: 360px) {
+    .vg-hero-copy {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .vg-hero h1 {
+        font-size: 34px;
+    }
+
+    .vg-photo-frame {
+        width: 80%;
+        height: 220px;
+    }
+
+    .vg-photo-badge {
+        right: 1%;
+    }
+
+    .category-cards {
+        gap: 8px;
+    }
+}
+
+.product-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.add-to-cart-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: 100%;
+    min-height: 38px;
+    padding: 8px;
+    border: 1px solid #2169e8;
+    border-radius: 8px;
+    background: #fff;
+    color: #2169e8;
+    font-size: 11px;
+    font-weight: 750;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.add-to-cart-btn:hover {
+    background: #2169e8;
+    color: #fff;
+}
+
+.add-to-cart-btn:disabled {
+    opacity: .7;
+    cursor: default;
+}
+
+</style>
+
+<script>
+(function () {
+    const CART_KEY = "vaibhavGarmentsCart";
+
+    function getCart() {
+        try {
+            const cart = JSON.parse(localStorage.getItem(CART_KEY) || "[]");
+            return Array.isArray(cart) ? cart : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function saveCart(cart) {
+        localStorage.setItem(CART_KEY, JSON.stringify(cart));
+        window.dispatchEvent(new Event("cart-updated"));
+    }
+
+    document.querySelectorAll(".add-to-cart-btn").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const id = button.dataset.id;
+            const cart = getCart();
+            const existing = cart.find(function (item) {
+                return String(item.id) === String(id);
+            });
+
+            if (existing) {
+                existing.quantity = (Number(existing.quantity) || 1) + 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: button.dataset.name,
+                    price: Number(button.dataset.price) || 0,
+                    image: button.dataset.image || "",
+                    url: button.dataset.url || "",
+                    quantity: 1
+                });
+            }
+
+            saveCart(cart);
+
+            const oldText = button.innerHTML;
+            button.textContent = "✓ Added to Cart";
+            button.disabled = true;
+
+            setTimeout(function () {
+                button.innerHTML = oldText;
+                button.disabled = false;
+            }, 900);
+        });
+    });
+})();
+</script>
+
+{% endblock %}
