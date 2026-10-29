@@ -1,0 +1,433 @@
+{% extends "base.html" %}
+{% block title %}Complete Your Order | Vaibhav Garments{% endblock %}
+
+{% block content %}
+{% set sizes = (product.sizes or '').split(',') | map('trim') | reject('equalto', '') | list %}
+{% set colours = (product.colours or '').split(',') | map('trim') | reject('equalto', '') | list %}
+
+<style>
+.order-page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 30px 18px 55px;
+    color: #173453;
+}
+.order-page * { box-sizing: border-box; }
+.order-back {
+    color: #2768bd;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+}
+.order-heading { margin: 22px 0 25px; }
+.order-tag {
+    display: inline-block;
+    background: #fff2bd;
+    color: #795b00;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+.order-heading h1 {
+    font-size: clamp(27px, 4vw, 38px);
+    letter-spacing: -1px;
+    margin: 12px 0 7px;
+    color: #163657;
+}
+.order-heading p {
+    color: #71849b;
+    font-size: 14px;
+    margin: 0;
+    line-height: 1.7;
+}
+.order-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, .85fr);
+    align-items: start;
+    gap: 22px;
+}
+.order-panel {
+    background: #fff;
+    border: 1px solid #e0eaf5;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 35px rgba(32, 67, 108, .06);
+}
+.panel-heading {
+    padding: 22px 25px;
+    background: linear-gradient(110deg, #eff6ff, #fffdf3);
+    border-bottom: 1px solid #e6edf6;
+}
+.panel-heading h2 {
+    margin: 0;
+    color: #1a3b60;
+    font-size: 18px;
+}
+.panel-heading p {
+    margin: 6px 0 0;
+    color: #778ba2;
+    font-size: 12px;
+    line-height: 1.6;
+}
+.order-form-body { padding: 24px; }
+.order-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 19px 16px;
+}
+.order-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+.order-field.full { grid-column: 1 / -1; }
+.order-field label {
+    font-size: 12px;
+    font-weight: 750;
+    color: #344f6d;
+}
+.order-field em { color: #d84747; font-style: normal; }
+.order-field input,
+.order-field textarea,
+.order-field select {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid #d8e4f2;
+    border-radius: 11px;
+    padding: 12px 13px;
+    outline: none;
+    background: #fbfdff;
+    color: #203d5d;
+    font: inherit;
+    font-size: 13px;
+    transition: border-color .2s, box-shadow .2s;
+}
+.order-field textarea { resize: vertical; line-height: 1.6; }
+.order-field input:focus,
+.order-field textarea:focus,
+.order-field select:focus {
+    border-color: #3980e8;
+    box-shadow: 0 0 0 3px rgba(43, 112, 225, .12);
+    background: #fff;
+}
+.order-field input::placeholder,
+.order-field textarea::placeholder { color: #93a2b4; }
+.order-note {
+    margin: 22px 0 0;
+    padding: 13px 15px;
+    border-radius: 11px;
+    background: #eff6ff;
+    border: 1px solid #d3e5ff;
+    color: #526f92;
+    font-size: 11px;
+    line-height: 1.7;
+}
+.summary-body { padding: 22px; }
+.summary-product {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr) auto;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 21px;
+}
+.summary-image {
+    width: 76px;
+    height: 84px;
+    border-radius: 12px;
+    background: #f0f5fc;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+}
+.summary-image img { width: 100%; height: 100%; object-fit: contain; }
+.summary-name { min-width: 0; }
+.summary-name b {
+    display: block;
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+.summary-name small {
+    display: block;
+    margin-top: 5px;
+    color: #7b8da2;
+    font-size: 11px;
+}
+.summary-price { font-size: 13px; font-weight: 800; white-space: nowrap; }
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 0;
+    border-top: 1px solid #e8eef6;
+    color: #72849a;
+    font-size: 12px;
+}
+.summary-line b { color: #294562; text-align: right; }
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 0;
+    margin-top: 2px;
+    border-top: 1px solid #dfe8f3;
+    color: #183958;
+    font-size: 14px;
+    font-weight: 800;
+}
+.summary-total strong { font-size: 25px; }
+.order-submit {
+    width: 100%;
+    min-height: 53px;
+    border: 0;
+    border-radius: 12px;
+    background: #1dbb70;
+    color: #fff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 7px 17px rgba(29, 187, 112, .17);
+    transition: transform .2s, background .2s;
+}
+.order-submit:hover { background: #159b5c; transform: translateY(-1px); }
+.order-small-note {
+    text-align: center;
+    color: #8494a7;
+    font-size: 11px;
+    line-height: 1.7;
+    margin: 13px 0;
+}
+.order-security {
+    border-top: 1px solid #e8eef6;
+    padding-top: 15px;
+    text-align: center;
+    color: #647e99;
+    font-size: 11px;
+}
+@media (max-width: 760px) {
+    .order-page { padding: 20px 12px 35px; }
+    .order-layout { grid-template-columns: 1fr; }
+    .order-form-body, .summary-body { padding: 18px; }
+    .panel-heading { padding: 19px; }
+}
+@media (max-width: 430px) {
+    .order-fields { grid-template-columns: 1fr; gap: 16px; }
+    .order-field.full { grid-column: auto; }
+    .summary-product { grid-template-columns: 65px minmax(0, 1fr) auto; gap: 10px; }
+    .summary-image { width: 65px; height: 74px; }
+}
+</style>
+
+<div class="order-page">
+    <a href="{{ url_for('product_detail', product_id=product.id) }}"
+       class="order-back">← Back to product</a>
+
+    <header class="order-heading">
+        <span class="order-tag">WHATSAPP ORDERING</span>
+        <h1>Complete your order</h1>
+        <p>Enter your delivery details. Your order will be sent directly to Vaibhav Garments on WhatsApp.</p>
+    </header>
+
+    <form method="post" class="order-layout">
+        <section class="order-panel">
+            <div class="panel-heading">
+                <h2>Customer details</h2>
+                <p>Fill in the details needed to deliver your order.</p>
+            </div>
+
+            <div class="order-form-body">
+                <div class="order-fields">
+                    <div class="order-field full">
+                        <label for="customer-name">Full name <em>*</em></label>
+                        <input id="customer-name" name="name" required
+                               autocomplete="name"
+                               value="{{ form.get('name', '') }}"
+                               placeholder="Enter your full name">
+                    </div>
+
+                    <div class="order-field">
+                        <label for="customer-mobile">Mobile / WhatsApp number <em>*</em></label>
+                        <input id="customer-mobile" name="mobile" type="tel"
+                               required inputmode="tel"
+                               pattern="[0-9+() -]{8,18}"
+                               autocomplete="tel"
+                               value="{{ form.get('mobile', '') }}"
+                               placeholder="Your mobile number">
+                    </div>
+
+                    <div class="order-field">
+                        <label for="customer-email">Email address <span>(optional)</span></label>
+                        <input id="customer-email" type="email" name="email"
+                               autocomplete="email"
+                               value="{{ form.get('email', '') }}"
+                               placeholder="you@example.com">
+                    </div>
+
+                    <div class="order-field full">
+                        <label for="customer-address">Delivery address <em>*</em></label>
+                        <textarea id="customer-address" name="address" required
+                                  rows="3" autocomplete="street-address"
+                                  placeholder="House number, street, village / locality">{{ form.get('address', '') }}</textarea>
+                    </div>
+
+                    <div class="order-field">
+                        <label for="customer-city">City / town <em>*</em></label>
+                        <input id="customer-city" name="city" required
+                               autocomplete="address-level2"
+                               value="{{ form.get('city', '') }}"
+                               placeholder="City / town">
+                    </div>
+
+                    <div class="order-field">
+                        <label for="customer-pincode">Pincode <em>*</em></label>
+                        <input id="customer-pincode" name="pincode" required
+                               inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+                               autocomplete="postal-code"
+                               value="{{ form.get('pincode', '') }}"
+                               placeholder="6-digit pincode">
+                    </div>
+
+                    {% if sizes %}
+                    <div class="order-field">
+                        <label for="product-size">Size <em>*</em></label>
+                        <select id="product-size" name="size" required>
+                            <option value="">Choose size</option>
+                            {% for size in sizes %}
+                            <option value="{{ size }}" {% if form.get('size', '') == size %}selected{% endif %}>{{ size }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+
+                    {% if colours %}
+                    <div class="order-field">
+                        <label for="product-colour">Colour <em>*</em></label>
+                        <select id="product-colour" name="colour" required>
+                            <option value="">Choose colour</option>
+                            {% for colour in colours %}
+                            <option value="{{ colour }}" {% if form.get('colour', '') == colour %}selected{% endif %}>{{ colour }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+
+                    {% if product.fabric %}
+                    <div class="order-field">
+                        <label for="product-fabric">Fabric</label>
+                        <input id="product-fabric" name="fabric"
+                               value="{{ form.get('fabric', product.fabric) }}"
+                               placeholder="Fabric preference">
+                    </div>
+                    {% endif %}
+
+                    <div class="order-field">
+                        <label for="product-quantity">Quantity <em>*</em></label>
+                        <input id="product-quantity" name="quantity" type="number"
+                               min="1" max="20"
+                               value="{{ form.get('quantity', '1') }}" required>
+                    </div>
+
+                    <div class="order-field full">
+                        <label for="order-note">Special request <span>(optional)</span></label>
+                        <textarea id="order-note" name="note" rows="2"
+                                  placeholder="Any additional request?">{{ form.get('note', '') }}</textarea>
+                    </div>
+                </div>
+
+                <p class="order-note">
+                    ℹ️ Your order details will be shared with the shop through WhatsApp.
+                    The shop will confirm availability and delivery charges.
+                </p>
+            </div>
+        </section>
+
+        <aside class="order-panel">
+            <div class="panel-heading">
+                <h2>Your order</h2>
+                <p>Check your product and quantity before continuing.</p>
+            </div>
+
+            <div class="summary-body">
+                <div class="summary-product">
+                    <div class="summary-image">
+                        {% if product.image %}
+                        <img src="{{ url_for('static', filename='uploads/' + product.image) }}"
+                             alt="{{ product.name }}">
+                        {% else %}
+                        <span>🛍️</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="summary-name">
+                        <b>{{ product.name }}</b>
+                        <small>{{ product.category }}</small>
+                        {% if product.fabric %}
+                        <small>Fabric: {{ product.fabric }}</small>
+                        {% endif %}
+                    </div>
+
+                    <strong class="summary-price">₹{{ '%.0f'|format(product.price) }}</strong>
+                </div>
+
+                <div class="summary-line">
+                    <span>Price per item</span>
+                    <b>₹{{ '%.0f'|format(product.price) }}</b>
+                </div>
+
+                <div class="summary-line">
+                    <span>Quantity</span>
+                    <b id="summary-quantity">1</b>
+                </div>
+
+                <div class="summary-line">
+                    <span>Delivery</span>
+                    <b>To be confirmed</b>
+                </div>
+
+                <div class="summary-total">
+                    <span>Estimated total</span>
+                    <strong id="total" data-price="{{ product.price }}">₹{{ '%.0f'|format(product.price) }}</strong>
+                </div>
+
+                <button class="order-submit" type="submit">
+                    ☎ &nbsp; Order on WhatsApp ↗
+                </button>
+
+                <p class="order-small-note">
+                    No online payment required. The shop will confirm your order on WhatsApp.
+                </p>
+
+                <div class="order-security">🔒 Your details are used to process this order.</div>
+            </div>
+        </aside>
+    </form>
+</div>
+
+<script>
+(() => {
+    const qty = document.querySelector('input[name="quantity"]');
+    const total = document.getElementById('total');
+    const summaryQty = document.getElementById('summary-quantity');
+    const price = Number(total.dataset.price) || 0;
+
+    function updateTotal() {
+        const n = Math.max(1, Math.min(20, Number(qty.value) || 1));
+        total.textContent = '₹' + (price * n).toLocaleString('en-IN', {
+            maximumFractionDigits: 0
+        });
+        summaryQty.textContent = n;
+    }
+
+    if (qty && total) {
+        qty.addEventListener('input', updateTotal);
+        updateTotal();
+    }
+})();
+</script>
+{% endblock %}
+```

@@ -1,0 +1,1933 @@
+{% extends "base.html" %}
+
+ 
+
+ 
+
+ 
+
+{% block title %}{{ 'Edit' if editing else 'Add' }} Product | Vaibhav Garments{% endblock %}
+
+ 
+
+ 
+
+ 
+
+{% block content %}
+
+ 
+
+ 
+
+ 
+
+<style>
+
+ 
+
+.product-admin-page {
+
+ 
+
+    max-width: 1000px;
+
+ 
+
+    margin: 0 auto;
+
+ 
+
+    padding: 28px 20px 50px;
+
+ 
+
+    color: #183453;
+
+ 
+
+}
+
+ 
+
+.product-admin-page * { box-sizing: border-box; }
+
+ 
+
+ 
+
+ 
+
+.product-admin-heading {
+
+ 
+
+    margin-bottom: 24px;
+
+ 
+
+}
+
+ 
+
+.product-admin-back {
+
+ 
+
+    display: inline-block;
+
+ 
+
+    margin-bottom: 20px;
+
+ 
+
+    color: #2869b5;
+
+ 
+
+    font-size: 13px;
+
+ 
+
+    font-weight: 700;
+
+ 
+
+    text-decoration: none;
+
+ 
+
+}
+
+ 
+
+.product-admin-back:hover { text-decoration: underline; }
+
+ 
+
+ 
+
+ 
+
+.product-admin-heading h1 {
+
+ 
+
+    margin: 13px 0 8px;
+
+ 
+
+    color: #163457;
+
+ 
+
+    font-size: clamp(27px, 4vw, 36px);
+
+ 
+
+    font-weight: 850;
+
+ 
+
+    letter-spacing: -.8px;
+
+ 
+
+}
+
+ 
+
+.product-admin-heading p {
+
+ 
+
+    margin: 0;
+
+ 
+
+    color: #75869b;
+
+ 
+
+    font-size: 14px;
+
+ 
+
+    line-height: 1.7;
+
+ 
+
+}
+
+ 
+
+.product-admin-tag {
+
+ 
+
+    display: inline-block;
+
+ 
+
+    padding: 8px 12px;
+
+ 
+
+    border-radius: 30px;
+
+ 
+
+    background: #e8f2ff;
+
+ 
+
+    color: #2368b5;
+
+ 
+
+    font-size: 11px;
+
+ 
+
+    font-weight: 800;
+
+ 
+
+    letter-spacing: 1px;
+
+ 
+
+}
+
+ 
+
+.product-admin-card {
+
+ 
+
+    overflow: hidden;
+
+ 
+
+    border: 1px solid #e1eaf4;
+
+ 
+
+    border-radius: 21px;
+
+ 
+
+    background: #fff;
+
+ 
+
+    box-shadow: 0 12px 32px rgba(33, 69, 112, .06);
+
+ 
+
+}
+
+ 
+
+.product-admin-card-header {
+
+ 
+
+    padding: 23px 27px;
+
+ 
+
+    border-bottom: 1px solid #eaf0f7;
+
+ 
+
+    background: linear-gradient(110deg, #f0f7ff, #fffdf4);
+
+ 
+
+}
+
+ 
+
+.product-admin-card-header h2 {
+
+ 
+
+    margin: 0;
+
+ 
+
+    color: #244464;
+
+ 
+
+    font-size: 18px;
+
+ 
+
+    font-weight: 800;
+
+ 
+
+}
+
+ 
+
+.product-admin-card-header p {
+
+ 
+
+    margin: 6px 0 0;
+
+ 
+
+    color: #7a8ba0;
+
+ 
+
+    font-size: 12px;
+
+ 
+
+}
+
+ 
+
+.product-admin-form { padding: 27px; }
+
+ 
+
+ 
+
+ 
+
+.product-admin-section-title {
+
+ 
+
+    display: flex;
+
+ 
+
+    align-items: center;
+
+ 
+
+    gap: 10px;
+
+ 
+
+    margin: 0 0 20px;
+
+ 
+
+    color: #244464;
+
+ 
+
+    font-size: 15px;
+
+ 
+
+    font-weight: 800;
+
+ 
+
+}
+
+ 
+
+.product-admin-section-title span {
+
+ 
+
+    display: grid;
+
+ 
+
+    place-items: center;
+
+ 
+
+    width: 32px;
+
+ 
+
+    height: 32px;
+
+ 
+
+    border-radius: 10px;
+
+ 
+
+    background: #eaf3ff;
+
+ 
+
+    color: #2469b7;
+
+ 
+
+}
+
+ 
+
+.product-admin-grid {
+
+ 
+
+    display: grid;
+
+ 
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+ 
+
+    gap: 20px;
+
+ 
+
+    margin-bottom: 29px;
+
+ 
+
+}
+
+ 
+
+.product-admin-field {
+
+ 
+
+    display: flex;
+
+ 
+
+    flex-direction: column;
+
+ 
+
+    gap: 8px;
+
+ 
+
+    min-width: 0;
+
+ 
+
+}
+
+ 
+
+.product-admin-field.full { grid-column: 1 / -1; }
+
+ 
+
+ 
+
+ 
+
+.product-admin-field label,
+
+ 
+
+.product-admin-field > span.field-label {
+
+ 
+
+    color: #344f6e;
+
+ 
+
+    font-size: 12px;
+
+ 
+
+    font-weight: 750;
+
+ 
+
+}
+
+ 
+
+.product-admin-field em {
+
+ 
+
+    color: #d34c4c;
+
+ 
+
+    font-style: normal;
+
+ 
+
+}
+
+ 
+
+.product-admin-field input:not([type="checkbox"]):not([type="file"]),
+
+ 
+
+.product-admin-field select,
+
+ 
+
+.product-admin-field textarea {
+
+ 
+
+    width: 100%;
+
+ 
+
+    min-height: 46px;
+
+ 
+
+    padding: 12px 13px;
+
+ 
+
+    border: 1px solid #dce6f1;
+
+ 
+
+    border-radius: 11px;
+
+ 
+
+    outline: none;
+
+ 
+
+    background: #fbfdff;
+
+ 
+
+    color: #243d5b;
+
+ 
+
+    font: inherit;
+
+ 
+
+    font-size: 13px;
+
+ 
+
+    transition: border-color .2s, box-shadow .2s, background .2s;
+
+ 
+
+}
+
+ 
+
+.product-admin-field textarea {
+
+ 
+
+    min-height: 115px;
+
+ 
+
+    resize: vertical;
+
+ 
+
+    line-height: 1.6;
+
+ 
+
+}
+
+ 
+
+.product-admin-field input:focus,
+
+ 
+
+.product-admin-field select:focus,
+
+ 
+
+.product-admin-field textarea:focus {
+
+ 
+
+    border-color: #76a8e8;
+
+ 
+
+    background: #fff;
+
+ 
+
+    box-shadow: 0 0 0 4px rgba(56, 125, 211, .10);
+
+ 
+
+}
+
+ 
+
+.product-admin-field input[type="file"] {
+
+ 
+
+    width: 100%;
+
+ 
+
+    padding: 13px;
+
+ 
+
+    border: 1px dashed #b9cfe7;
+
+ 
+
+    border-radius: 12px;
+
+ 
+
+    background: #f6faff;
+
+ 
+
+    color: #526c89;
+
+ 
+
+    font-size: 12px;
+
+ 
+
+}
+
+ 
+
+.product-admin-help {
+
+ 
+
+    color: #8896a8;
+
+ 
+
+    font-size: 11px;
+
+ 
+
+    line-height: 1.5;
+
+ 
+
+}
+
+ 
+
+.product-admin-current-image {
+
+ 
+
+    display: flex;
+
+ 
+
+    align-items: center;
+
+ 
+
+    gap: 12px;
+
+ 
+
+    margin-top: 8px;
+
+ 
+
+    padding: 10px;
+
+ 
+
+    border: 1px solid #e5edf6;
+
+ 
+
+    border-radius: 12px;
+
+ 
+
+    background: #f8fbff;
+
+ 
+
+    overflow-wrap: anywhere;
+
+ 
+
+    color: #637992;
+
+ 
+
+    font-size: 12px;
+
+ 
+
+}
+
+ 
+
+.product-admin-current-image img {
+
+ 
+
+    width: 58px;
+
+ 
+
+    height: 65px;
+
+ 
+
+    flex-shrink: 0;
+
+ 
+
+    object-fit: cover;
+
+ 
+
+    border-radius: 8px;
+
+ 
+
+    background: #eaf1f9;
+
+ 
+
+}
+
+ 
+
+.product-admin-checks {
+
+ 
+
+    display: grid;
+
+ 
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+ 
+
+    gap: 13px;
+
+ 
+
+    margin-bottom: 28px;
+
+ 
+
+}
+
+ 
+
+.product-admin-check {
+
+ 
+
+    display: flex;
+
+ 
+
+    align-items: flex-start;
+
+ 
+
+    gap: 11px;
+
+ 
+
+    padding: 15px;
+
+ 
+
+    border: 1px solid #e3ebf5;
+
+ 
+
+    border-radius: 13px;
+
+ 
+
+    background: #fbfdff;
+
+ 
+
+    cursor: pointer;
+
+ 
+
+}
+
+ 
+
+.product-admin-check input {
+
+ 
+
+    width: 17px;
+
+ 
+
+    height: 17px;
+
+ 
+
+    margin-top: 2px;
+
+ 
+
+    accent-color: #246bc1;
+
+ 
+
+    flex-shrink: 0;
+
+ 
+
+}
+
+ 
+
+.product-admin-check strong {
+
+ 
+
+    display: block;
+
+ 
+
+    margin-bottom: 4px;
+
+ 
+
+    color: #304b6b;
+
+ 
+
+    font-size: 12px;
+
+ 
+
+}
+
+ 
+
+.product-admin-check small {
+
+ 
+
+    display: block;
+
+ 
+
+    color: #8391a3;
+
+ 
+
+    font-size: 11px;
+
+ 
+
+    line-height: 1.5;
+
+ 
+
+}
+
+ 
+
+.product-admin-actions {
+
+ 
+
+    display: flex;
+
+ 
+
+    align-items: center;
+
+ 
+
+    justify-content: flex-end;
+
+ 
+
+    gap: 12px;
+
+ 
+
+    padding-top: 22px;
+
+ 
+
+    border-top: 1px solid #eaf0f7;
+
+ 
+
+}
+
+ 
+
+.product-admin-btn {
+
+ 
+
+    display: inline-flex;
+
+ 
+
+    align-items: center;
+
+ 
+
+    justify-content: center;
+
+ 
+
+    min-height: 45px;
+
+ 
+
+    padding: 12px 19px;
+
+ 
+
+    border: 1px solid transparent;
+
+ 
+
+    border-radius: 11px;
+
+ 
+
+    font-family: inherit;
+
+ 
+
+    font-size: 13px;
+
+ 
+
+    font-weight: 750;
+
+ 
+
+    text-decoration: none;
+
+ 
+
+    cursor: pointer;
+
+ 
+
+    transition: transform .2s, background .2s;
+
+ 
+
+}
+
+ 
+
+.product-admin-btn:hover { transform: translateY(-1px); }
+
+ 
+
+.product-admin-btn-cancel {
+
+ 
+
+    border-color: #dce6f1;
+
+ 
+
+    background: #fff;
+
+ 
+
+    color: #4c6480;
+
+ 
+
+}
+
+ 
+
+.product-admin-btn-cancel:hover { background: #f4f8fd; }
+
+ 
+
+.product-admin-btn-save {
+
+ 
+
+    background: #2169c4;
+
+ 
+
+    color: #fff;
+
+ 
+
+    box-shadow: 0 6px 15px rgba(33, 105, 196, .18);
+
+ 
+
+}
+
+ 
+
+.product-admin-btn-save:hover { background: #1758a8; }
+
+ 
+
+ 
+
+ 
+
+@media (max-width: 620px) {
+
+ 
+
+    .product-admin-page { padding: 20px 12px 32px; }
+
+ 
+
+    .product-admin-card { border-radius: 16px; }
+
+ 
+
+    .product-admin-card-header { padding: 19px; }
+
+ 
+
+    .product-admin-form { padding: 19px; }
+
+ 
+
+    .product-admin-grid { grid-template-columns: 1fr; gap: 17px; }
+
+ 
+
+    .product-admin-field.full { grid-column: auto; }
+
+ 
+
+    .product-admin-checks { grid-template-columns: 1fr; }
+
+ 
+
+    .product-admin-actions { flex-direction: column-reverse; }
+
+ 
+
+    .product-admin-actions .product-admin-btn { width: 100%; }
+
+ 
+
+}
+
+ 
+
+</style>
+
+ 
+
+ 
+
+ 
+
+<div class="product-admin-page">
+
+ 
+
+ 
+
+ 
+
+    <div class="product-admin-heading">
+
+ 
+
+        <a class="product-admin-back" href="{{ url_for('admin_dashboard') }}">
+
+ 
+
+            ← Back to dashboard
+
+ 
+
+        </a>
+
+ 
+
+ 
+
+ 
+
+        <br>
+
+ 
+
+ 
+
+ 
+
+        <span class="product-admin-tag">PRODUCT CATALOGUE</span>
+
+ 
+
+ 
+
+ 
+
+        <h1>{{ 'Edit product' if editing else 'Add a new product' }}</h1>
+
+ 
+
+ 
+
+ 
+
+        <p>
+
+ 
+
+            Add attractive product details, upload a photo and keep your
+
+ 
+
+            customer catalogue updated.
+
+ 
+
+        </p>
+
+ 
+
+    </div>
+
+ 
+
+ 
+
+ 
+
+    <section class="product-admin-card">
+
+ 
+
+        <div class="product-admin-card-header">
+
+ 
+
+            <h2>Product information</h2>
+
+ 
+
+            <p>Fields marked with * are required.</p>
+
+ 
+
+        </div>
+
+ 
+
+ 
+
+ 
+
+        <form method="post"
+
+ 
+
+              enctype="multipart/form-data"
+
+ 
+
+              class="product-admin-form">
+
+ 
+
+ 
+
+ 
+
+            <input type="hidden"
+
+ 
+
+                   name="csrf_token"
+
+ 
+
+                   value="{{ csrf_token() }}">
+
+ 
+
+ 
+
+ 
+
+            <h3 class="product-admin-section-title">
+
+ 
+
+                <span>✦</span> Basic details
+
+ 
+
+            </h3>
+
+ 
+
+ 
+
+ 
+
+            <div class="product-admin-grid">
+
+ 
+
+ 
+
+ 
+
+                <div class="product-admin-field full">
+
+ 
+
+                    <label for="product-name">Product name <em>*</em></label>
+
+ 
+
+                    <input id="product-name"
+
+ 
+
+                           name="name"
+
+ 
+
+                           required
+
+ 
+
+                           maxlength="150"
+
+ 
+
+                           value="{{ product.name if product else '' }}"
+
+ 
+
+                           placeholder="e.g. Premium Cotton Shirt">
+
+ 
+
+                </div>
+
+ 
+
+ 
+
+ 
+
+                <div class="product-admin-field">
+
+ 
+
+                    <label for="product-category">Category <em>*</em></label>
+
+ 
+
+                    <select id="product-category" name="category" required>
+
+ 
+
+                        {% for c in ['Women', 'Men', 'Kids', 'Beauty'] %}
+
+ 
+
+                        <option value="{{ c }}"
+
+ 
+
+                            {% if product and product.category == c %}selected{% endif %}>
+
+ 
+
+                            {{ 'Cosmetics' if c == 'Beauty' else c }}
+
+ 
+
+                        </option>
+
+ 
+
+                        {% endfor %}
+
+ 
+
+                    </select>
+
+ 
+
+                </div>
+
+ 
+
+ 
+
+ 
+
+                <div class="product-admin-field">
+
+ 
+
+                    <label for="product-fabric">Fabric / material</label>
+
+ 
+
+                    <input id="product-fabric"
+
+ 
+
+                           name="fabric"
+
+ 
+
+                           maxlength="100"
+
+ 
+
+                           value="{{ product.fabric if product else '' }}"
+
+ 
+
+                           placeholder="e.g. Cotton, Silk, Rayon">
+
+ 
+
+                </div>
+
+ 
+
+ 
+
+ 
+
+                <div class="product-admin-field">
+
+ 
+
+                    <label for="product-price">Selling price (₹) <em>*</em></label>
+
+ 
+
+                    <input id="product-price"
+
+ 
+
+                           type="number"
+
+ 
+
+                           name="price"
+
+ 
+
+                           min="0"
+
+ 
+
+                           step="0.01"
+
+ 
+
+                           required
+
+ 
+
+                           value="{{ product.price if product else '' }}"
+
+ 
+
+                           placeholder="e.g. 999">
+
+ 
+
+                </div>
+
+ 
+
+ 
+
+ 
+
+                <div class="product-admin-field">
+
+ 
+
+                    <label for="product-old-price">MRP / old price (₹)</label>
+
+ 
+
+                    <input id="product-old-price"
+
+ 
+
+                           type="number"
+
+ 
+
+                           name="old_price"
+
+ 
+
+                           min="0"
+
+ 
+
+                           step="0.01"
+
+ 
+
+                           value="{{ product.old_price if product else 0 }}"
+
+ 
+
+                           placeholder="e.g. 1499">
+
+ 
+
+                    <span class="product-admin-help">
+
+ 
+
+                        Optional: enter the original price if applicable.
+
+ 
+
+                    </span>
+
+ 
+
+                </div>
+
+ 
+
+ 
+
+ 
+
+                <div class="product-admin-field full">
+
+ 
+
+                    <label for="product-description">Product description</label>
+
+ 
+
+                    <textarea id="product-description"
+
+ 
+
+                              name="description"
+
+ 
+
+                              maxlength="3000"
+
+ 
+
+                              rows="4"
+
+ 
+
+                              placeholder="Describe the design, fit, material and occasion...">{{ product.description if product else '' }}</textarea>
+
+ 
+
+                </div>
+
+ 
+
+ 
+
+ 
+
+            </div>
+
+ 
+
+ 
+
+ 
+
+            <h3 class="product-admin-section-title">
+
+ 
+
+                <span>◈</span> Sizes and colours
+
+ 
+
+            </h3>
+
+ 
+
+ 
+
+ 
+
+            <div class="product-admin-grid">
+
+ 
+
+ 
+
+ 
+
+                <div class="product-admin-field">
+
+ 
+
+                    <label for="product-sizes">Available sizes</label>
+
+ 
+
+                    <input id="product-sizes"
+
+ 
+
+                           name="sizes"
+
+ 
+
+                           maxlength="200"
+
+ 
+
+                           value="{{ product.sizes if product else 'S, M, L, XL' }}"
+
+ 
+
+                           placeholder="e.g. S, M, L or 2.4, 2.6, 2.8 (optional)">
+
+ 
+
+                    <span class="product-admin-help">
+
+ 
+
+                        Optional. Examples: S, M, L; bangle sizes 2.4, 2.6, 2.8; or Free Size.
+
+ 
+
+                    </span>
+
+ 
+
+                </div>
+
+ 
+
+ 
+
+ 
+
+                <div class="product-admin-field">
+
+ 
+
+                    <label for="product-colours">Available colours <em>*</em></label>
+
+ 
+
+                    <input id="product-colours"
+
+ 
+
+                           name="colours"
+
+ 
+
+                           required
+
+ 
+
+                           maxlength="200"
+
+ 
+
+                           value="{{ product.colours if product else 'Blue, Black' }}"
+
+ 
+
+                           placeholder="Blue, Black, White">
+
+ 
+
+                </div>
+
+ 
+
+ 
+
+ 
+
+            </div>
+
+ 
+
+ 
+
+ 
+
+            <h3 class="product-admin-section-title">
+
+ 
+
+                <span>▧</span> Product photo
+
+ 
+
+            </h3>
+
+ 
+
+ 
+
+ 
+
+            <div class="product-admin-grid">
+
+ 
+
+ 
+
+ 
+
+                <div class="product-admin-field full">
+
+ 
+
+                    <label for="product-image">Upload product image</label>
+
+ 
+
+                    <input id="product-image"
+
+ 
+
+                           type="file"
+
+ 
+
+                           name="image"
+
+ 
+
+                           accept=".png,.jpg,.jpeg,.webp,.gif,image/png,image/jpeg,image/webp,image/gif">
+
+ 
+
+ 
+
+ 
+
+                    <span class="product-admin-help">
+
+ 
+
+                        PNG, JPG, WEBP or GIF. Maximum file size: 8 MB.
+
+ 
+
+                        For edits, leave this empty to keep the current image.
+
+ 
+
+                    </span>
+
+ 
+
+ 
+
+ 
+
+                    {% if product and product.image %}
+
+ 
+
+                    <div class="product-admin-current-image">
+
+ 
+
+                        <img
+
+ 
+
+                            src="{{ url_for('static', filename='uploads/' + product.image) }}"
+
+ 
+
+                            alt="Current product image">
+
+ 
+
+                        <div>
+
+ 
+
+                            <strong>Current image</strong><br>
+
+ 
+
+                            {{ product.image }}
+
+ 
+
+                        </div>
+
+ 
+
+                    </div>
+
+ 
+
+                    {% endif %}
+
+ 
+
+                </div>
+
+ 
+
+ 
+
+ 
+
+            </div>
+
+ 
+
+ 
+
+ 
+
+            <h3 class="product-admin-section-title">
+
+ 
+
+                <span>✓</span> Display options
+
+ 
+
+            </h3>
+
+ 
+
+ 
+
+ 
+
+            <div class="product-admin-checks">
+
+ 
+
+ 
+
+ 
+
+                <label class="product-admin-check">
+
+ 
+
+                    <input type="checkbox"
+
+ 
+
+                           name="featured"
+
+ 
+
+                           {% if product and product.featured %}checked{% endif %}>
+
+ 
+
+ 
+
+ 
+
+                    <span>
+
+ 
+
+                        <strong>Popular pick</strong>
+
+ 
+
+                        <small>Highlight this product as a featured choice.</small>
+
+ 
+
+                    </span>
+
+ 
+
+                </label>
+
+ 
+
+ 
+
+ 
+
+                <label class="product-admin-check">
+
+ 
+
+                    <input type="checkbox"
+
+ 
+
+                           name="active"
+
+ 
+
+                           {% if not product or product.active %}checked{% endif %}>
+
+ 
+
+ 
+
+ 
+
+                    <span>
+
+ 
+
+                        <strong>Visible on website</strong>
+
+ 
+
+                        <small>Customers can see this product when enabled.</small>
+
+ 
+
+                    </span>
+
+ 
+
+                </label>
+
+ 
+
+ 
+
+ 
+
+            </div>
+
+ 
+
+ 
+
+ 
+
+            <div class="product-admin-actions">
+
+ 
+
+                <a class="product-admin-btn product-admin-btn-cancel"
+
+ 
+
+                   href="{{ url_for('admin_dashboard') }}">
+
+ 
+
+                    Cancel
+
+ 
+
+                </a>
+
+ 
+
+ 
+
+ 
+
+                <button class="product-admin-btn product-admin-btn-save"
+
+ 
+
+                        type="submit">
+
+ 
+
+                    {{ 'Save changes ✓' if editing else 'Save product ✓' }}
+
+ 
+
+                </button>
+
+ 
+
+            </div>
+
+ 
+
+ 
+
+ 
+
+        </form>
+
+ 
+
+    </section>
+
+ 
+
+ 
+
+ 
+
+</div>
+
+ 
+
+ 
+
+ 
+
+{% endblock %}
+
+ 
+
+```
