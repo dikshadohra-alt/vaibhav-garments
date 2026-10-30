@@ -1,0 +1,337 @@
+
+{% extends "base.html" %}
+{% block title %}My Wishlist | Vaibhav Garments{% endblock %}
+
+{% block content %}
+<section class="wishlist-page">
+
+  <div class="wishlist-hero">
+    <div>
+      <span class="wishlist-eyebrow">YOUR PERSONAL COLLECTION</span>
+      <h1>My Wishlist <span>♥</span></h1>
+      <p>Your favourite styles, all in one place.</p>
+    </div>
+    <div class="wishlist-heart-art">♡</div>
+  </div>
+
+  <div class="wishlist-toolbar">
+    <div>
+      <h2>Saved for later</h2>
+      <p id="wishlist-count">Your favourite products</p>
+    </div>
+    <a href="{{ url_for('home') }}" class="wishlist-continue">
+      + Explore fashion
+    </a>
+  </div>
+
+  <div id="wishlist-products" class="wishlist-grid">
+    <div class="wishlist-loading">Loading your favourites...</div>
+  </div>
+
+  <div id="wishlist-empty" class="wishlist-empty" hidden>
+    <div class="empty-heart">♡</div>
+    <h2>Your wishlist is waiting!</h2>
+    <p>Save the outfits you love by tapping the heart on a product.</p>
+    <a href="{{ url_for('home') }}" class="wishlist-shop-button">
+      Explore Collection →
+    </a>
+  </div>
+
+</section>
+
+<style>
+.wishlist-page {
+  max-width: 1180px;
+  min-height: 460px;
+  margin: 28px auto 55px;
+  padding: 0 18px;
+  color: #172337;
+}
+.wishlist-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 34px 38px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: linear-gradient(115deg,#eaf2ff,#fff8d9);
+}
+.wishlist-eyebrow {
+  color: #2874f0;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+}
+.wishlist-hero h1 {
+  margin: 12px 0 7px;
+  font-size: clamp(28px,4vw,40px);
+  letter-spacing: -1px;
+}
+.wishlist-hero h1 span { color: #f04472; }
+.wishlist-hero p {
+  margin: 0;
+  color: #718097;
+  font-size: 13px;
+}
+.wishlist-heart-art {
+  color: #f04472;
+  font-size: 105px;
+  line-height: 1;
+  text-shadow: 0 12px 25px #f0447224;
+}
+.wishlist-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin: 30px 0 20px;
+}
+.wishlist-toolbar h2 {
+  margin: 0 0 5px;
+  font-size: 20px;
+}
+.wishlist-toolbar p {
+  margin: 0;
+  color: #8190a4;
+  font-size: 12px;
+}
+.wishlist-continue {
+  padding: 11px 15px;
+  border: 1px solid #dce6f7;
+  border-radius: 10px;
+  color: #2874f0;
+  background: white;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 18px;
+}
+.wishlist-loading {
+  grid-column: 1/-1;
+  padding: 30px;
+  color: #718097;
+  text-align: center;
+}
+.wishlist-empty {
+  padding: 55px 20px;
+  border: 1px solid #e7edf6;
+  border-radius: 20px;
+  background: white;
+  text-align: center;
+}
+.wishlist-empty[hidden] { display: none; }
+.empty-heart {
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 17px;
+  border-radius: 50%;
+  background: #fff0f4;
+  color: #f04472;
+  font-size: 42px;
+}
+.wishlist-empty h2 { margin: 0 0 10px; }
+.wishlist-empty p {
+  max-width: 390px;
+  margin: 0 auto 22px;
+  color: #7b899d;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.wishlist-shop-button {
+  display: inline-block;
+  padding: 13px 20px;
+  border-radius: 10px;
+  background: #2874f0;
+  color: white;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.wishlist-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #e7edf5;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0 5px 18px #17233708;
+}
+.wishlist-card-image {
+  position: relative;
+  height: 235px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #f1f5fb;
+}
+.wishlist-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.wishlist-card-info { padding: 14px; }
+.wishlist-card-category {
+  color: #2874f0;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.wishlist-card-name {
+  display: block;
+  margin: 7px 0;
+  color: #172337;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.wishlist-card-price {
+  margin-bottom: 13px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.wishlist-card-actions {
+  display: grid;
+  gap: 8px;
+}
+.wishlist-view, .wishlist-buy, .wishlist-remove {
+  display: block;
+  padding: 10px 8px;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.wishlist-view {
+  border: 1px solid #dce6f7;
+  color: #2874f0;
+}
+.wishlist-buy {
+  background: #2874f0;
+  color: white;
+}
+.wishlist-remove {
+  width: 100%;
+  border: 1px solid #f8dce5;
+  background: #fff5f7;
+  color: #e3446d;
+}
+@media(max-width:850px) {
+  .wishlist-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .wishlist-card-image { height: 220px; }
+}
+@media(max-width:480px) {
+  .wishlist-page { margin-top: 16px; padding: 0 12px; }
+  .wishlist-hero { padding: 25px 20px; border-radius: 16px; }
+  .wishlist-heart-art { font-size: 65px; }
+  .wishlist-hero p { max-width: 230px; line-height: 1.7; }
+  .wishlist-toolbar { align-items: flex-start; }
+  .wishlist-continue { padding: 9px; white-space: nowrap; }
+  .wishlist-grid { gap: 10px; }
+  .wishlist-card-image { height: 175px; }
+  .wishlist-card-info { padding: 10px; }
+  .wishlist-card-name { font-size: 12px; }
+  .wishlist-card-price { font-size: 16px; }
+}
+</style>
+
+<script>
+(() => {
+  const storageKey = "vaibhav_garments_wishlist";
+  const products = {{ wishlist_products|default([], true)|tojson }};
+  const container = document.getElementById("wishlist-products");
+  const empty = document.getElementById("wishlist-empty");
+  const count = document.getElementById("wishlist-count");
+
+  function getSaved() {
+    try {
+      const value = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      return Array.isArray(value) ? value.map(String) : [];
+    } catch {
+      return [];
+    }
+  }
+
+  function render() {
+    const saved = getSaved();
+    const items = products.filter(p => saved.includes(String(p.id)));
+
+    count.textContent = `${items.length} favourite ${items.length === 1 ? "product" : "products"}`;
+    container.innerHTML = "";
+    empty.hidden = items.length !== 0;
+    container.hidden = items.length === 0;
+
+    items.forEach(p => {
+      const card = document.createElement("article");
+      card.className = "wishlist-card";
+
+      const image = document.createElement("img");
+      image.src = p.image_url || "";
+      image.alt = p.name || "Product";
+      image.loading = "lazy";
+
+      const imageBox = document.createElement("div");
+      imageBox.className = "wishlist-card-image";
+      if (p.image_url) imageBox.appendChild(image);
+      else imageBox.textContent = "👕";
+
+      const info = document.createElement("div");
+      info.className = "wishlist-card-info";
+
+      const category = document.createElement("div");
+      category.className = "wishlist-card-category";
+      category.textContent = p.category || "Fashion";
+
+      const name = document.createElement("a");
+      name.className = "wishlist-card-name";
+      name.href = p.product_url;
+      name.textContent = p.name || "Product";
+
+      const price = document.createElement("div");
+      price.className = "wishlist-card-price";
+      price.textContent = "₹" + Number(p.price || 0).toLocaleString("en-IN");
+
+      const actions = document.createElement("div");
+      actions.className = "wishlist-card-actions";
+
+      const view = document.createElement("a");
+      view.className = "wishlist-view";
+      view.href = p.product_url;
+      view.textContent = "View Product";
+
+      const buy = document.createElement("a");
+      buy.className = "wishlist-buy";
+      buy.href = p.order_url;
+      buy.textContent = "Buy on WhatsApp";
+
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.className = "wishlist-remove";
+      remove.textContent = "♥ Remove";
+      remove.addEventListener("click", () => {
+        localStorage.setItem(storageKey, JSON.stringify(
+          getSaved().filter(id => id !== String(p.id))
+        ));
+        render();
+      });
+
+      actions.append(view, buy, remove);
+      info.append(category, name, price, actions);
+      card.append(imageBox, info);
+      container.appendChild(card);
+    });
+  }
+
+  render();
+})();
+</script>
+{% endblock %}

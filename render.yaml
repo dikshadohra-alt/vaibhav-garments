@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: vaibhav-garments
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: WHATSAPP_NUMBER
+        value: "7015769205"
+      - key: INSTAGRAM_URL
+        value: "https://www.instagram.com/vaibhav_garments_padha_0/"
+      - key: SHOP_ADDRESS
+        value: "Village Padha, Tehsil Assandh, District Karnal, Haryana - 132036"

@@ -1,0 +1,1685 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }} | Vaibhav Garments{% endblock %}
+
+{% block content %}
+
+<style>
+
+
+/* Product page action buttons */
+
+ 
+
+.premium-product-actions {
+
+ 
+
+    display: flex;
+
+ 
+
+    flex-direction: column;
+
+ 
+
+    gap: 12px;
+
+ 
+
+    margin-top: 22px;
+
+ 
+
+}
+
+.premium-buy-button,
+
+ 
+
+.premium-cart-button {
+
+ 
+
+    box-sizing: border-box;
+
+ 
+
+    width: 100%;
+
+ 
+
+    min-height: 70px;
+
+ 
+
+    display: flex;
+
+ 
+
+    align-items: center;
+
+ 
+
+    gap: 14px;
+
+ 
+
+    padding: 13px 18px;
+
+ 
+
+    border-radius: 15px;
+
+ 
+
+    text-decoration: none;
+
+ 
+
+    font-family: inherit;
+
+ 
+
+    cursor: pointer;
+
+ 
+
+    transition: background .2s ease, transform .2s ease;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.premium-buy-button {
+
+ 
+
+    background: #2875f0;
+
+ 
+
+    color: #fff;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.premium-buy-button:hover {
+
+ 
+
+    background: #185dc9;
+
+ 
+
+    transform: translateY(-1px);
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.premium-cart-button {
+
+ 
+
+    justify-content: center;
+
+ 
+
+    border: 2px solid #2875f0;
+
+ 
+
+    background: #fff;
+
+ 
+
+    color: #2169e8;
+
+ 
+
+    font-size: 15px;
+
+ 
+
+    font-weight: 750;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.premium-cart-button:hover {
+
+ 
+
+    background: #eef5ff;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.premium-buy-icon {
+
+ 
+
+    display: flex;
+
+ 
+
+    align-items: center;
+
+ 
+
+    justify-content: center;
+
+ 
+
+    width: 44px;
+
+ 
+
+    height: 44px;
+
+ 
+
+    flex-shrink: 0;
+
+ 
+
+    border-radius: 12px;
+
+ 
+
+    background: rgba(255,255,255,.17);
+
+ 
+
+    font-size: 23px;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.premium-buy-text {
+
+ 
+
+    display: flex;
+
+ 
+
+    flex-direction: column;
+
+ 
+
+    gap: 5px;
+
+ 
+
+    font-size: 15px;
+
+ 
+
+    font-weight: 750;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.premium-buy-text small {
+
+ 
+
+    font-size: 12px;
+
+ 
+
+    font-weight: 400;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.premium-buy-arrow {
+
+ 
+
+    margin-left: auto;
+
+ 
+
+    font-size: 23px;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.premium-cart-button:disabled {
+
+ 
+
+    opacity: .75;
+
+ 
+
+    cursor: default;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+@media (max-width: 480px) {
+
+ 
+
+    .premium-buy-button,
+
+ 
+
+    .premium-cart-button {
+
+ 
+
+        min-height: 58px;
+
+ 
+
+        padding: 11px 13px;
+
+ 
+
+    }
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.return-policy-card {
+
+ 
+
+    display: flex;
+
+ 
+
+    align-items: center;
+
+ 
+
+    gap: 14px;
+
+ 
+
+    margin-top: 20px;
+
+ 
+
+    padding: 16px;
+
+ 
+
+    background: #eff6ff;
+
+ 
+
+    border: 1px solid #bfdbfe;
+
+ 
+
+    border-radius: 14px;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.return-policy-icon {
+
+ 
+
+    width: 42px;
+
+ 
+
+    height: 42px;
+
+ 
+
+    display: flex;
+
+ 
+
+    align-items: center;
+
+ 
+
+    justify-content: center;
+
+ 
+
+    flex-shrink: 0;
+
+ 
+
+    border-radius: 12px;
+
+ 
+
+    background: #dbeafe;
+
+ 
+
+    color: #2563eb;
+
+ 
+
+    font-size: 27px;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.return-policy-content h4 {
+
+ 
+
+    margin: 0 0 5px;
+
+ 
+
+    color: #1e40af;
+
+ 
+
+    font-size: 15px;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+.return-policy-content p {
+
+ 
+
+    margin: 0;
+
+ 
+
+    color: #475569;
+
+ 
+
+    font-size: 13px;
+
+ 
+
+    line-height: 1.6;
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+ 
+
+/* Related products */
+
+.related-products-section {
+
+    width: min(1320px, 94%);
+
+    margin: 42px auto 56px;
+
+}
+
+.related-products-heading {
+
+    margin-bottom: 18px;
+
+}
+
+.related-products-heading .eyebrow {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #2563eb;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: .14em;
+
+}
+
+.related-products-heading h2 {
+
+    margin: 0;
+
+    color: #173965;
+
+    font-size: clamp(22px, 2.5vw, 30px);
+
+}
+
+.related-products-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+}
+
+.related-product-card {
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    border: 1px solid #dce7f5;
+
+    border-radius: 16px;
+
+    background: #fff;
+
+    box-shadow: 0 8px 24px rgba(26, 62, 110, .06);
+
+    transition: transform .2s ease, box-shadow .2s ease;
+
+}
+
+.related-product-card:hover {
+
+    transform: translateY(-3px);
+
+    box-shadow: 0 12px 28px rgba(26, 62, 110, .11);
+
+}
+
+.related-product-image {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    height: 210px;
+
+    padding: 12px;
+
+    background: #f2f6fc;
+
+}
+
+.related-product-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+    object-position: center;
+
+}
+
+.related-product-info {
+
+    display: grid;
+
+    gap: 8px;
+
+    padding: 14px;
+
+}
+
+.related-product-category {
+
+    color: #2563eb;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: .1em;
+
+    text-transform: uppercase;
+
+}
+
+.related-product-name {
+
+    color: #173965;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 1.45;
+
+    text-decoration: none;
+
+}
+
+.related-product-price {
+
+    color: #173965;
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+}
+
+.related-product-link {
+
+    display: block;
+
+    margin-top: 3px;
+
+    padding: 10px;
+
+    border-radius: 9px;
+
+    background: #2563eb;
+
+    color: #fff;
+
+    font-size: 12px;
+
+    font-weight: 750;
+
+    text-align: center;
+
+    text-decoration: none;
+
+}
+
+@media (max-width: 900px) {
+
+    .related-products-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+
+    .related-product-image { height: 180px; }
+
+}
+
+@media (max-width: 600px) {
+
+    .related-products-section { width: 92%; margin: 30px auto 40px; }
+
+    .related-products-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; }
+
+    .related-product-image { height: 155px; }
+
+    .related-product-info { padding: 11px; }
+
+    .related-product-name { font-size: 13px; }
+
+    .related-product-price { font-size: 16px; }
+
+}
+
+ 
+
+</style>
+
+ 
+
+ 
+
+ 
+
+<div class="product-breadcrumb">
+
+ 
+
+  <a href="{{ url_for('home') }}">Home</a>
+
+ 
+
+  <span>/</span>
+
+ 
+
+  <a href="{{ url_for('home', category=product.category) }}">{{ product.category }}</a>
+
+ 
+
+  <span>/</span>
+
+ 
+
+  <span>{{ product.name }}</span>
+
+ 
+
+</div>
+
+ 
+
+ 
+
+ 
+
+<section class="premium-product">
+
+ 
+
+ 
+
+ 
+
+  <!-- PRODUCT IMAGE -->
+
+ 
+
+  <div class="premium-product-visual">
+
+ 
+
+ 
+
+ 
+
+    <span class="product-collection-tag">
+
+ 
+
+      {{ product.category }} Collection
+
+ 
+
+    </span>
+
+ 
+
+ 
+
+ 
+
+    <button
+
+ 
+
+      type="button"
+
+ 
+
+      class="detail-wishlist"
+
+ 
+
+      aria-label="Add to wishlist"
+
+ 
+
+      title="Add to wishlist"
+
+ 
+
+      aria-pressed="false"
+
+ 
+
+      onclick="toggleProductFavourite(this, '{{ product.id }}')">
+
+ 
+
+      ♡
+
+ 
+
+    </button>
+
+ 
+
+ 
+
+ 
+
+    {% if product.image %}
+
+ 
+
+      <img
+
+ 
+
+        class="premium-main-image"
+
+ 
+
+        src="{{ url_for('static', filename='uploads/' + product.image) }}"
+
+ 
+
+        alt="{{ product.name }}">
+
+ 
+
+    {% else %}
+
+ 
+
+      <div class="premium-product-placeholder">
+
+ 
+
+        <span>{{ '👗' if product.category == 'Women' else ('👔' if product.category == 'Men' else '🧸') }}</span>
+
+ 
+
+        <p>{{ product.category }} Fashion</p>
+
+ 
+
+      </div>
+
+ 
+
+    {% endif %}
+
+ 
+
+ 
+
+ 
+
+    {% if product.featured %}
+
+ 
+
+      <span class="premium-popular-tag">✦ Popular Pick</span>
+
+ 
+
+    {% endif %}
+
+ 
+
+ 
+
+ 
+
+  </div>
+
+ 
+
+ 
+
+ 
+
+  <!-- PRODUCT DETAILS -->
+
+ 
+
+  <div class="premium-product-details">
+
+ 
+
+ 
+
+ 
+
+    <div class="premium-product-kicker">
+
+ 
+
+      VAIBHAV GARMENTS <span>•</span> {{ product.category|upper }}
+
+ 
+
+    </div>
+
+ 
+
+ 
+
+ 
+
+    <h1>{{ product.name }}</h1>
+
+<div class="premium-price-block">
+
+ 
+
+      <strong>₹{{ '%.0f'|format(product.price) }}</strong>
+
+ 
+
+ 
+
+ 
+
+      {% if product.old_price and product.old_price > product.price %}
+
+ 
+
+        <del>₹{{ '%.0f'|format(product.old_price) }}</del>
+
+ 
+
+        <span class="premium-saving">
+
+ 
+
+          {{ ((product.old_price - product.price) / product.old_price * 100)|round|int }}% OFF
+
+ 
+
+        </span>
+
+ 
+
+      {% endif %}
+
+ 
+
+    </div>
+
+ 
+
+ 
+
+ 
+
+    {% if product.description %}
+
+      <p class="premium-product-description">{{ product.description }}</p>
+
+      {% endif %}
+
+ 
+
+ 
+
+ 
+
+    <div class="premium-divider"></div>
+
+ 
+
+ 
+
+ 
+
+    {% if product.fabric %}
+
+      <div class="premium-detail-row">
+
+        <span><span class="detail-mini-icon">✧</span> Fabric</span>
+
+        <strong>{{ product.fabric }}</strong>
+
+      </div>
+
+      {% endif %}
+
+ 
+
+ 
+
+ 
+
+    
+
+{% if product.sizes and product.sizes|string|trim and product.sizes|string|trim != 'S, M, L, XL' %}
+<div class="premium-detail-row">
+    <span><span class="detail-mini-icon">◉</span> Available sizes</span>
+    <strong>{{ product.sizes }}</strong>
+</div>
+{% endif %}
+ss
+
+
+    {% if product.colours and product.colours|trim %}
+
+      <div class="premium-detail-row">
+
+        <span><span class="detail-mini-icon">◈</span> Available colours</span>
+
+        <strong>{{ product.colours }}</strong>
+
+      </div>
+
+      {% endif %}
+
+<!-- PRODUCT ACTIONS -->
+
+ 
+
+    <div class="premium-product-actions">
+
+ 
+
+ 
+
+ 
+
+      <!-- Direct WhatsApp order: Cart is NOT required -->
+
+ 
+
+      <a
+
+ 
+
+        class="premium-buy-button"
+
+ 
+
+        href="{{ url_for('order_product', product_id=product.id) }}">
+
+ 
+
+ 
+
+ 
+
+        <span class="premium-buy-icon">☏</span>
+
+ 
+
+ 
+
+ 
+
+        <span class="premium-buy-text">
+
+ 
+
+          Buy on WhatsApp
+
+ 
+
+          <small>Easy and personal ordering</small>
+
+ 
+
+        </span>
+
+ 
+
+ 
+
+ 
+
+        <span class="premium-buy-arrow">↗</span>
+
+ 
+
+      </a>
+
+ 
+
+ 
+
+ 
+
+      <!-- Add to Cart -->
+
+ 
+
+      <button
+
+ 
+
+        type="button"
+
+ 
+
+        class="premium-cart-button"
+
+ 
+
+        id="detail-add-to-cart"
+
+ 
+
+        data-id="{{ product.id }}"
+
+ 
+
+        data-name="{{ product.name }}"
+
+ 
+
+        data-price="{{ product.price }}"
+
+ 
+
+        data-image="{{ url_for('static', filename='uploads/' + product.image) if product.image else '' }}"
+
+ 
+
+        data-url="{{ url_for('product_detail', product_id=product.id) }}">
+
+ 
+
+ 
+
+ 
+
+        🛒 &nbsp; Add to Cart
+
+ 
+
+      </button>
+
+ 
+
+ 
+
+ 
+
+    </div>
+
+<a class="premium-back-link" href="{{ url_for('home', category=product.category) }}">
+
+ 
+
+      ← Continue shopping
+
+ 
+
+    </a>
+
+ 
+
+ 
+
+ 
+
+  </div>
+
+ 
+
+ 
+
+ 
+
+<div class="return-policy-card">
+
+ 
+
+    <div class="return-policy-icon">↻</div>
+
+ 
+
+    <div class="return-policy-content">
+
+ 
+
+        <h4>3-Day Return &amp; Exchange</h4>
+
+ 
+
+        <p>Need a return or exchange? Contact us within 3 days.</p>
+
+ 
+
+    </div>
+
+ 
+
+</div>
+
+ 
+
+ 
+
+ 
+
+</section>
+
+ 
+
+ 
+
+ 
+
+ 
+
+{% if related_products %}
+
+<section class="related-products-section" aria-labelledby="related-products-title">
+
+    <div class="related-products-heading">
+
+        <span class="eyebrow">MORE TO EXPLORE</span>
+
+        <h2 id="related-products-title">You may also like</h2>
+
+    </div>
+
+ 
+
+    <div class="related-products-grid">
+
+        {% for item in related_products %}
+
+        {% if item.id != product.id %}
+
+        <article class="related-product-card">
+
+            <a class="related-product-image"
+
+               href="{{ url_for('product_detail', product_id=item.id) }}"
+
+               aria-label="View {{ item.name }}">
+
+                {% if item.image %}
+
+                <img src="{{ url_for('static', filename='uploads/' + item.image) }}"
+
+                     alt="{{ item.name }}"
+
+                     loading="lazy">
+
+                {% endif %}
+
+            </a>
+
+            <div class="related-product-info">
+
+                <span class="related-product-category">{{ item.category }}</span>
+
+                <a class="related-product-name"
+
+                   href="{{ url_for('product_detail', product_id=item.id) }}">{{ item.name }}</a>
+
+                <span class="related-product-price">₹{{ '%.0f'|format(item.price) }}</span>
+
+                <a class="related-product-link"
+
+                   href="{{ url_for('product_detail', product_id=item.id) }}">View product ↗</a>
+
+            </div>
+
+        </article>
+
+        {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+ 
+
+ 
+
+<script>
+
+ 
+
+/* WISHLIST */
+
+ 
+
+function toggleProductFavourite(button, productId) {
+
+ 
+
+  const key = "vaibhav_garments_wishlist";
+
+ 
+
+  let saved = [];
+
+ 
+
+ 
+
+ 
+
+  try {
+
+ 
+
+    saved = JSON.parse(localStorage.getItem(key) || "[]");
+
+ 
+
+    if (!Array.isArray(saved)) saved = [];
+
+ 
+
+  } catch (error) {
+
+ 
+
+    saved = [];
+
+ 
+
+  }
+
+ 
+
+ 
+
+ 
+
+  const id = String(productId);
+
+ 
+
+  const exists = saved.includes(id);
+
+ 
+
+ 
+
+ 
+
+  if (exists) {
+
+ 
+
+    saved = saved.filter(item => item !== id);
+
+ 
+
+  } else {
+
+ 
+
+    saved.push(id);
+
+ 
+
+  }
+
+ 
+
+ 
+
+ 
+
+  localStorage.setItem(key, JSON.stringify(saved));
+
+ 
+
+ 
+
+ 
+
+  button.classList.toggle("is-favourite", !exists);
+
+ 
+
+  button.innerHTML = !exists ? "♥" : "♡";
+
+ 
+
+  button.setAttribute("aria-pressed", String(!exists));
+
+ 
+
+  button.title = !exists ? "Remove from wishlist" : "Add to wishlist";
+
+ 
+
+}
+
+ 
+
+ 
+
+ 
+
+/* LOAD WISHLIST STATE */
+
+ 
+
+document.addEventListener("DOMContentLoaded", function () {
+
+ 
+
+  const button = document.querySelector(".detail-wishlist");
+
+ 
+
+ 
+
+ 
+
+  if (button) {
+
+ 
+
+    try {
+
+ 
+
+      const saved = JSON.parse(
+
+ 
+
+        localStorage.getItem("vaibhav_garments_wishlist") || "[]"
+
+ 
+
+      );
+
+ 
+
+ 
+
+ 
+
+      if (Array.isArray(saved) && saved.includes(String("{{ product.id }}"))) {
+
+ 
+
+        button.classList.add("is-favourite");
+
+ 
+
+        button.innerHTML = "♥";
+
+ 
+
+        button.setAttribute("aria-pressed", "true");
+
+ 
+
+        button.title = "Remove from wishlist";
+
+ 
+
+      }
+
+ 
+
+    } catch (error) {
+
+ 
+
+      // Wishlist remains usable if saved data is invalid.
+
+ 
+
+    }
+
+ 
+
+  }
+
+ 
+
+ 
+
+ 
+
+  /* ADD PRODUCT TO CART */
+
+ 
+
+  const cartButton = document.getElementById("detail-add-to-cart");
+
+ 
+
+  if (!cartButton) return;
+
+ 
+
+ 
+
+ 
+
+  cartButton.addEventListener("click", function () {
+
+ 
+
+    const cartKey = "vaibhavGarmentsCart";
+
+ 
+
+    let cart = [];
+
+ 
+
+ 
+
+ 
+
+    try {
+
+ 
+
+      cart = JSON.parse(localStorage.getItem(cartKey) || "[]");
+
+ 
+
+      if (!Array.isArray(cart)) cart = [];
+
+ 
+
+    } catch (error) {
+
+ 
+
+      cart = [];
+
+ 
+
+    }
+
+ 
+
+ 
+
+ 
+
+    const id = String(cartButton.dataset.id);
+
+ 
+
+    const existing = cart.find(item => String(item.id) === id);
+
+ 
+
+ 
+
+ 
+
+    if (existing) {
+
+ 
+
+      existing.quantity = (Number(existing.quantity) || 1) + 1;
+
+ 
+
+    } else {
+
+ 
+
+      cart.push({
+
+ 
+
+        id: id,
+
+ 
+
+        name: cartButton.dataset.name,
+
+ 
+
+        price: Number(cartButton.dataset.price) || 0,
+
+ 
+
+        image: cartButton.dataset.image || "",
+
+ 
+
+        url: cartButton.dataset.url || "",
+
+ 
+
+        quantity: 1
+
+ 
+
+      });
+
+ 
+
+    }
+
+ 
+
+ 
+
+ 
+
+    try {
+
+ 
+
+      localStorage.setItem(cartKey, JSON.stringify(cart));
+
+ 
+
+      window.dispatchEvent(new Event("cart-updated"));
+
+ 
+
+ 
+
+ 
+
+      const originalText = "🛒 \u00a0 Add to Cart";
+
+ 
+
+      cartButton.textContent = "✓ Added to Cart";
+
+ 
+
+      cartButton.disabled = true;
+
+
+ 
+
+      setTimeout(function () {
+
+ 
+
+        cartButton.textContent = originalText;
+
+        cartButton.disabled = false;
+
+      }, 1200);
+    } catch (error) {
+
+      alert("Product could not be added to cart. Please check your browser storage settings.");
+
+    }
+
+  });
+
+});
+</script>
+{% endblock %}
