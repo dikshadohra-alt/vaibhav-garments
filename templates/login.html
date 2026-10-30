@@ -1,0 +1,381 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}Admin Login | Vaibhav Garments{% endblock %}
+
+{% block content %}
+
+<style>
+.admin-login-page {
+    min-height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 42px 16px;
+    background:
+        radial-gradient(circle at 10% 10%, #e7f0ff 0, transparent 35%),
+        radial-gradient(circle at 90% 90%, #fff3c4 0, transparent 32%),
+        #f7f9fd;
+    box-sizing: border-box;
+}
+
+.admin-login-page * {
+    box-sizing: border-box;
+}
+
+.admin-login-card {
+    width: 100%;
+    max-width: 430px;
+    padding: 36px;
+    background: #fff;
+    border: 1px solid #e6ebf4;
+    border-radius: 24px;
+    box-shadow: 0 22px 65px rgba(28, 58, 103, .12);
+}
+
+.admin-login-brand {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 28px;
+}
+
+.admin-login-logo {
+    width: 54px;
+    height: 54px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 16px;
+    background: #2169e8;
+    color: #ffe49a;
+    font: 700 25px Georgia, serif;
+    box-shadow: 0 8px 20px rgba(33, 105, 232, .2);
+}
+
+.admin-login-brand strong {
+    display: block;
+    color: #17365f;
+    font-size: 15px;
+    letter-spacing: .5px;
+}
+
+.admin-login-brand small {
+    display: block;
+    margin-top: 5px;
+    color: #8290a5;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+}
+
+.admin-login-eyebrow {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 20px;
+    background: #edf4ff;
+    color: #2169e8;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.admin-login-card h1 {
+    margin: 17px 0 8px;
+    color: #172b46;
+    font: 700 clamp(27px, 5vw, 33px) Georgia, serif;
+}
+
+.admin-login-description {
+    margin: 0 0 27px;
+    color: #748198;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.admin-login-card label {
+    display: block;
+    margin-bottom: 17px;
+    color: #34445c;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-login-card input:not([type="hidden"]) {
+    display: block;
+    width: 100%;
+    height: 48px;
+    margin-top: 8px;
+    padding: 0 14px;
+    border: 1px solid #dce4f0;
+    border-radius: 12px;
+    background: #fbfcff;
+    color: #172b46;
+    font: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.admin-login-card input:focus {
+    border-color: #2169e8;
+    box-shadow: 0 0 0 4px rgba(33, 105, 232, .1);
+}
+
+/* Password field with eye button */
+.admin-password-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.admin-login-card .admin-password-wrap input {
+    padding-right: 54px;
+}
+
+.admin-password-toggle {
+    position: absolute;
+    top: 8px;
+    right: 5px;
+    width: 40px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: #647b98;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+
+.admin-password-toggle:hover {
+    background: #edf4ff;
+    color: #2169e8;
+}
+
+.admin-password-toggle:focus-visible {
+    outline: 2px solid #2169e8;
+    outline-offset: 1px;
+}
+
+.admin-password-toggle svg {
+    width: 21px;
+    height: 21px;
+    pointer-events: none;
+}
+
+.admin-login-submit {
+    width: 100%;
+    min-height: 49px;
+    margin-top: 5px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 12px;
+    background: #2169e8;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+}
+
+.admin-login-submit:hover {
+    background: #1856c5;
+    transform: translateY(-1px);
+}
+
+.admin-login-submit:focus-visible {
+    outline: 3px solid #a9c9ff;
+    outline-offset: 3px;
+}
+
+.admin-login-security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin-top: 19px;
+    color: #7c8ba1;
+    font-size: 11px;
+}
+
+.admin-login-security span {
+    color: #16885b;
+}
+
+.admin-login-back {
+    display: block;
+    margin-top: 24px;
+    color: #2169e8;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.admin-login-back:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .admin-login-page {
+        min-height: 68vh;
+        padding: 25px 13px;
+    }
+
+    .admin-login-card {
+        padding: 25px 21px;
+        border-radius: 20px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .admin-login-card *,
+    .admin-login-card *::before,
+    .admin-login-card *::after {
+        transition: none !important;
+    }
+}
+</style>
+
+<div class="admin-login-page">
+
+    <form method="post" class="admin-login-card">
+
+        <!-- CSRF protection -->
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
+
+        <!-- Brand -->
+        <div class="admin-login-brand">
+            <div class="admin-login-logo">VG</div>
+
+            <div>
+                <strong>VAIBHAV GARMENTS</strong>
+                <small>STORE MANAGEMENT</small>
+            </div>
+        </div>
+
+        <span class="admin-login-eyebrow">
+            ADMINISTRATOR ACCESS
+        </span>
+
+        <h1>Welcome back</h1>
+
+        <p class="admin-login-description">
+            Sign in to manage your products, collections and store settings.
+        </p>
+
+        <!-- Username -->
+        <label for="admin-username">
+            Username
+
+            <input
+                id="admin-username"
+                name="username"
+                type="text"
+                required
+                maxlength="80"
+                autocomplete="username"
+                placeholder="Enter your admin username"
+                autofocus
+            >
+        </label>
+
+        <!-- Password with show/hide button -->
+        <label for="admin-password">
+            Password
+        </label>
+
+        <div class="admin-password-wrap">
+            <input
+                id="admin-password"
+                name="password"
+                type="password"
+                required
+                autocomplete="current-password"
+                placeholder="Enter your password"
+            >
+
+            <button
+                type="button"
+                id="toggle-admin-password"
+                class="admin-password-toggle"
+                aria-label="Show password"
+                aria-pressed="false"
+                title="Show password"
+            >
+                <svg
+                    id="admin-eye-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                >
+                    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Sign in -->
+        <button class="admin-login-submit" type="submit">
+            Sign in to dashboard &rarr;
+        </button>
+
+        <div class="admin-login-security">
+            <span>●</span>
+            Protected admin area
+        </div>
+
+        <a class="admin-login-back" href="{{ url_for('home') }}">
+            &larr; Back to Vaibhav Garments
+        </a>
+
+    </form>
+</div>
+
+<script>
+(function () {
+    const passwordInput = document.getElementById("admin-password");
+    const toggleButton = document.getElementById("toggle-admin-password");
+    const eyeIcon = document.getElementById("admin-eye-icon");
+
+    if (!passwordInput || !toggleButton || !eyeIcon) return;
+
+    toggleButton.addEventListener("click", function () {
+        const shouldShow = passwordInput.type === "password";
+
+        passwordInput.type = shouldShow ? "text" : "password";
+
+        toggleButton.setAttribute(
+            "aria-label",
+            shouldShow ? "Hide password" : "Show password"
+        );
+
+        toggleButton.setAttribute(
+            "aria-pressed",
+            String(shouldShow)
+        );
+
+        toggleButton.setAttribute(
+            "title",
+            shouldShow ? "Hide password" : "Show password"
+        );
+
+        eyeIcon.innerHTML = shouldShow
+            ? '<path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.7 10.7 0 0 1 12 5c6.4 0 10 7 10 7a16 16 0 0 1-3 3.8"/><path d="M6.2 6.2C3.5 8.1 2 12 2 12s3.6 7 10 7a10 10 0 0 0 3-.5"/>'
+            : '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>';
+    });
+})();
+</script>
+
+{% endblock %}
+```

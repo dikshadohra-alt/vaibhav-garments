@@ -1,0 +1,387 @@
+{% extends "base.html" %}
+
+ 
+
+{% block title %}Store Settings | Vaibhav Garments
+
+<script>
+
+document.querySelectorAll(".password-toggle").forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const input = document.getElementById(button.dataset.passwordTarget);
+
+        if (!input) return;
+
+        const showing = input.type === "text";
+
+        input.type = showing ? "password" : "text";
+
+        button.textContent = showing ? "Show" : "Hide";
+
+        button.setAttribute("aria-pressed", String(!showing));
+
+        button.setAttribute(
+
+            "aria-label",
+
+            (showing ? "Show " : "Hide ") + input.name.replaceAll("_", " ")
+
+        );
+
+    });
+
+});
+
+</script>
+
+ 
+
+{% endblock %}
+
+ 
+
+{% block content %}
+
+<style>
+
+.store-settings-page{max-width:900px;margin:0 auto;padding:30px 20px 50px;color:#183453}
+
+.store-settings-page *{box-sizing:border-box}
+
+.settings-back{display:inline-block;margin-bottom:22px;color:#2869b5;font-size:13px;font-weight:750;text-decoration:none}
+
+.settings-back:hover{text-decoration:underline}
+
+.settings-hero{margin-bottom:25px}
+
+.settings-tag{display:inline-block;padding:8px 12px;border-radius:30px;background:#e8f2ff;color:#2368b5;font-size:11px;font-weight:800;letter-spacing:1px}
+
+.settings-hero h1{margin:14px 0 8px;color:#163457;font-size:clamp(28px,4vw,37px);font-weight:850;letter-spacing:-.8px}
+
+.settings-hero p{margin:0;color:#78899e;font-size:14px;line-height:1.7}
+
+.settings-card{overflow:hidden;margin-bottom:22px;border:1px solid #e1eaf4;border-radius:21px;background:#fff;box-shadow:0 12px 32px rgba(33,69,112,.06)}
+
+.settings-card-heading{padding:23px 27px;border-bottom:1px solid #eaf0f7;background:linear-gradient(110deg,#f0f7ff,#fffdf3)}
+
+.settings-card-heading h2{margin:0;color:#244464;font-size:18px;font-weight:800}
+
+.settings-card-heading p{margin:6px 0 0;color:#7a8ba0;font-size:12px;line-height:1.6}
+
+.settings-form{padding:27px}
+
+.settings-field{display:flex;flex-direction:column;gap:9px;margin-bottom:23px}
+
+.settings-field label{color:#344f6e;font-size:12px;font-weight:800}
+
+.settings-field em{color:#d34c4c;font-style:normal}
+
+.settings-field input,.settings-field textarea{width:100%;min-height:47px;padding:13px 14px;border:1px solid #dce6f1;border-radius:11px;outline:none;background:#fbfdff;color:#243d5b;font:inherit;font-size:13px;transition:border-color .2s,box-shadow .2s,background .2s}
+
+.settings-field textarea{min-height:105px;resize:vertical;line-height:1.6}
+
+.settings-field input:focus,.settings-field textarea:focus{border-color:#76a8e8;background:#fff;box-shadow:0 0 0 4px rgba(56,125,211,.10)}
+
+.settings-help{color:#8997a8;font-size:11px;line-height:1.6}
+
+.settings-tip{display:flex;align-items:flex-start;gap:13px;margin:5px 0 25px;padding:17px;border:1px solid #bfdbfe;border-radius:13px;background:#eff6ff}
+
+.settings-tip-icon{display:grid;flex-shrink:0;place-items:center;width:35px;height:35px;border-radius:10px;background:#dbeafe;color:#2563eb;font-size:17px}
+
+.settings-tip strong{display:block;margin-bottom:5px;color:#1d4ed8;font-size:12px}
+
+.settings-tip p{margin:0;color:#475569;font-size:12px;line-height:1.7}
+
+.settings-actions{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding-top:22px;border-top:1px solid #eaf0f7}
+
+.settings-btn{display:inline-flex;align-items:center;justify-content:center;min-height:45px;padding:12px 19px;border:1px solid transparent;border-radius:11px;font-family:inherit;font-size:13px;font-weight:750;text-decoration:none;cursor:pointer;transition:transform .2s,background .2s}
+
+.settings-btn:hover{transform:translateY(-1px)}
+
+.settings-btn-cancel{border-color:#dce6f1;background:#fff;color:#4c6480}
+
+.settings-btn-cancel:hover{background:#f4f8fd}
+
+.settings-btn-save{background:#2169c4;color:#fff;box-shadow:0 6px 15px rgba(33,105,196,.18)}
+
+.settings-btn-save:hover{background:#1758a8}
+
+@media(max-width:600px){.store-settings-page{padding:20px 12px 32px}.settings-card{border-radius:16px}.settings-card-heading,.settings-form{padding:19px}.settings-actions{flex-direction:column-reverse}.settings-actions .settings-btn{width:100%}}
+
+ 
+
+.password-input-wrap{position:relative;display:flex;align-items:center;width:100%}
+
+.password-input-wrap input{padding-right:78px}
+
+.password-toggle{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:0;border-radius:8px;padding:7px 10px;background:#e8f2ff;color:#2169c4;font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+
+.password-toggle:hover{background:#d8e9ff}
+
+.password-toggle:focus-visible{outline:2px solid #2169c4;outline-offset:2px}
+
+ 
+
+</style>
+
+ 
+
+<div class="store-settings-page">
+
+    <a class="settings-back" href="{{ url_for('admin_dashboard') }}">← Back to dashboard</a>
+
+ 
+
+    <header class="settings-hero">
+
+        <span class="settings-tag">BUSINESS DETAILS & SECURITY</span>
+
+        <h1>Store settings</h1>
+
+        <p>Manage your shop's contact information and keep your admin account secure.</p>
+
+    </header>
+
+ 
+
+    <section class="settings-card">
+
+        <div class="settings-card-heading">
+
+            <h2>Contact & location</h2>
+
+            <p>These details help customers contact your business.</p>
+
+        </div>
+
+ 
+
+        <form method="post" class="settings-form" action="{{ url_for('admin_settings') }}">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+ 
+
+            <div class="settings-field">
+
+                <label for="whatsapp-number">WhatsApp number <em>*</em></label>
+
+                <input id="whatsapp-number" type="tel" name="whatsapp_number" required maxlength="20"
+
+                       value="{{ whatsapp }}" placeholder="e.g. 917015769205">
+
+                <span class="settings-help">Enter the country code and number. Check the number carefully before saving.</span>
+
+            </div>
+
+ 
+
+            <div class="settings-field">
+
+                <label for="instagram-url">Instagram profile URL</label>
+
+                <input id="instagram-url" type="url" name="instagram_url" maxlength="500"
+
+                       value="{{ instagram }}" placeholder="https://www.instagram.com/your_profile/">
+
+                <span class="settings-help">Paste your complete Instagram profile link.</span>
+
+            </div>
+
+ 
+
+            <div class="settings-field">
+
+                <label for="shop-address">Shop address</label>
+
+                <textarea id="shop-address" name="shop_address" maxlength="1000" rows="3"
+
+                          placeholder="Enter your complete shop address">{{ address }}</textarea>
+
+                <span class="settings-help">Include village, town, district, state and PIN code.</span>
+
+            </div>
+
+ 
+
+            <div class="settings-tip">
+
+                <span class="settings-tip-icon">ⓘ</span>
+
+                <div>
+
+                    <strong>Settings saved permanently</strong>
+
+                    <p>Your WhatsApp number, Instagram link and shop address are saved in the database. They remain saved when Flask restarts as long as your database file or hosted database is preserved.</p>
+
+                </div>
+
+            </div>
+
+ 
+
+            <div class="settings-actions">
+
+                <a class="settings-btn settings-btn-cancel" href="{{ url_for('admin_dashboard') }}">Cancel</a>
+
+                <button class="settings-btn settings-btn-save" type="submit">Save settings ✓</button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+ 
+
+    <section class="settings-card">
+
+        <div class="settings-card-heading">
+
+            <h2>🔐 Change admin password</h2>
+
+            <p>Update the password you use to sign in to the admin panel.</p>
+
+        </div>
+
+ 
+
+        <form method="post" class="settings-form" action="{{ url_for('admin_change_password') }}" autocomplete="off">
+
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+ 
+
+            <div class="settings-field">
+
+                <label for="current-password">Current password <em>*</em></label>
+
+                <div class="password-input-wrap">
+
+                    <input id="current-password" type="password" name="current_password" required
+
+                           autocomplete="current-password" maxlength="128" placeholder="Enter current password">
+
+                    <button class="password-toggle" type="button" data-password-target="current-password"
+
+                            aria-label="Show current password" aria-pressed="false">Show</button>
+
+                </div>
+
+            </div>
+
+ 
+
+            <div class="settings-field">
+
+                <label for="new-password">New password <em>*</em></label>
+
+                <div class="password-input-wrap">
+
+                    <input id="new-password" type="password" name="new_password" required
+
+                           autocomplete="new-password" minlength="10" maxlength="128"
+
+                           placeholder="At least 10 characters">
+
+                    <button class="password-toggle" type="button" data-password-target="new-password"
+
+                            aria-label="Show new password" aria-pressed="false">Show</button>
+
+                </div>
+
+                <span class="settings-help">Use at least 10 characters. A unique password is recommended.</span>
+
+            </div>
+
+ 
+
+            <div class="settings-field">
+
+                <label for="confirm-password">Confirm new password <em>*</em></label>
+
+                <div class="password-input-wrap">
+
+                    <input id="confirm-password" type="password" name="confirm_password" required
+
+                           autocomplete="new-password" minlength="10" maxlength="128"
+
+                           placeholder="Enter the new password again">
+
+                    <button class="password-toggle" type="button" data-password-target="confirm-password"
+
+                            aria-label="Show password confirmation" aria-pressed="false">Show</button>
+
+                </div>
+
+            </div>
+
+ 
+
+            <div class="settings-tip">
+
+                <span class="settings-tip-icon">ⓘ</span>
+
+                <div>
+
+                    <strong>Security note</strong>
+
+                    <p>Your current password must be verified before changing it. The new password should be stored as a secure password hash, never as plain text.</p>
+
+                </div>
+
+            </div>
+
+ 
+
+            <div class="settings-actions">
+
+                <button class="settings-btn settings-btn-save" type="submit">Update password ✓</button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+ 
+
+<script>
+
+document.querySelectorAll(".password-toggle").forEach(function(button) {
+
+    button.addEventListener("click", function() {
+
+        const input = document.getElementById(button.dataset.passwordTarget);
+
+        if (!input) return;
+
+        const showing = input.type === "text";
+
+        input.type = showing ? "password" : "text";
+
+        button.textContent = showing ? "Show" : "Hide";
+
+        button.setAttribute("aria-pressed", String(!showing));
+
+        button.setAttribute(
+
+            "aria-label",
+
+            (showing ? "Show " : "Hide ") + input.name.replaceAll("_", " ")
+
+        );
+
+    });
+
+});
+
+</script>
+
+ 
+
+{% endblock %}
