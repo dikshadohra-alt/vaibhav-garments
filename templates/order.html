@@ -5,7 +5,7 @@
 {% set sizes = (product.sizes or '').split(',') | map('trim') | reject('equalto', '') | list %}
 {% set colours = (product.colours or '').split(',') | map('trim') | reject('equalto', '') | list %}
 
-<style>
+<style>ss
 .order-page {
     max-width: 1120px;
     margin: 0 auto;
@@ -430,4 +430,3 @@
 })();
 </script>
 {% endblock %}
-```
