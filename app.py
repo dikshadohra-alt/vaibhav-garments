@@ -62,21 +62,7 @@ app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret-before-deploym
  
 
 csrf = CSRFProtect(app)
-
- 
-
- 
-
- 
-
-app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024
-
- 
-
- 
-
- 
-
+app.config["MAX_CONTENT_LENGTH"] = 40 * 1024 * 1024
 app.config["UPLOAD_FOLDER"] = str(UPLOAD_DIR)
 
  
@@ -174,26 +160,6 @@ def get_db():
  
 
     return conn
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -798,29 +764,15 @@ def init_db():
  
 
             db.execute("DROP TABLE products")
-
- 
-
- 
-
- 
-
             db.execute("ALTER TABLE products_new RENAME TO products")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
+            db.execute("""
+            CREATE TABLE IF NOT EXISTS product_images (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                product_id INTEGER NOT NULL,
+                image TEXT NOT NULL,
+                FOREIGN KEY (product_id) REFERENCES products(id)
+            )
+        """)
         count = db.execute("SELECT COUNT(*) AS n FROM admin_users").fetchone()["n"]
 
  
