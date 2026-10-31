@@ -2396,32 +2396,31 @@ def edit_product(product_id=None):
  
 
         image_name = existing["image"] if existing else ""
+        uploaded_images = [
+            img for img in request.files.getlist("images")
+            if img and img.filename
+        ]
 
-uploaded_images = [
-    img for img in request.files.getlist("images")
-    if img and img.filename
-]
+        if any(not allowed_file(img.filename) for img in uploaded_images):
+            flash("Only PNG, JPG, JPEG, WEBP or GIF images are allowed.", "error")
+            return render_template(
+                "admin/product_form.html",
+                product=existing,
+                editing=bool(existing)
+            )
 
-if any(not allowed_file(img.filename) for img in uploaded_images):
-    flash("Only PNG, JPG, JPEG, WEBP or GIF images are allowed.", "error")
-    return render_template(
-        "admin/product_form.html",
-        product=existing,
-        editing=bool(existing)
-    )
+        saved_images = []
 
-saved_images = []
+        for img in uploaded_images:
+            filename = secure_filename(img.filename)
+            stem, ext = os.path.splitext(filename)
 
-for img in uploaded_images:
-    filename = secure_filename(img.filename)
-    stem, ext = os.path.splitext(filename)
+            unique_name = f"{stem[:50]}_{os.urandom(4).hex()}{ext.lower()}"
+            img.save(UPLOAD_DIR / unique_name)
+            saved_images.append(unique_name)
 
-    unique_name = f"{stem[:50]}_{os.urandom(4).hex()}{ext.lower()}"
-    img.save(UPLOAD_DIR / unique_name)
-    saved_images.append(unique_name)
-
-if saved_images:
-    image_name = saved_images[0]
+        if saved_images:
+            image_name = saved_images[0]
 
  
 
@@ -2502,63 +2501,34 @@ if saved_images:
  
 
         with get_db() as db:
-    if existing:
-        saved_product_id = product_id
+            if existing:
+                saved_product_id = product_id
 
-        db.execute("""
-            UPDATE products
-            SET name=?, category=?, price=?, old_price=?,
-                description=?, fabric=?, sizes=?, colours=?,
-                image=?, featured=?, active=?
-            WHERE id=?
-        """, values + (product_id,))
+                db.execute("""
+                    UPDATE products
+                    SET name=?, category=?, price=?, old_price=?,
+                        description=?, fabric=?, sizes=?, colours=?,
+                        image=?, featured=?, active=?
+                    WHERE id=?
+                """, values + (product_id,))
+            else:
+                cursor = db.execute("""
+                    INSERT INTO products
+                    (name, category, price, old_price, description, fabric,
+                     sizes, colours, image, featured, active)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """, values)
 
-    else:
-        cursor = db.execute("""
-            INSERT INTO products
-            (name, category, price, old_price, description, fabric,
-             sizes, colours, image, featured, active)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, values)
+                saved_product_id = cursor.lastrowid
 
-        saved_product_id = cursor.lastrowid
-
-    for saved_image in saved_images:
-        db.execute("""
-            INSERT INTO product_images (product_id, image)
-            VALUES (?, ?)
-        """, (saved_product_id, saved_image))
- 
-
- with get_db() as db:
-    if existing:
-        saved_product_id = product_id
-    else:
-        saved_product_id = db.execute(
-            "SELECT last_insert_rowid()"
-        ).fetchone()[0]
-
-    for saved_image in saved_images:
-        db.execute(
-            "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
-            (saved_product_id, saved_image)
-        )
+            for saved_image in saved_images:
+                db.execute("""
+                    INSERT INTO product_images (product_id, image)
+                    VALUES (?, ?)
+                """, (saved_product_id, saved_image))
 
         flash("Product saved successfully.", "success")
-
- 
-
- 
-
- 
-
         return redirect(url_for("admin_dashboard"))
-
- 
-
- 
-
- 
 
     return render_template("admin/product_form.html", product=existing, editing=bool(existing))
 
