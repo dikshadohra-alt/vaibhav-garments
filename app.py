@@ -1217,10 +1217,6 @@ def home():
 
  
 
- 
-
- 
-
             params.append(category)
 
  
@@ -1343,7 +1339,10 @@ def product_detail(product_id):
 
             abort(404)
 
- 
+    product_images = db.execute(
+    "SELECT image FROM product_images WHERE product_id=? ORDER BY id ASC",
+    (product_id,)
+).fetchall()
 
  
 
@@ -1353,7 +1352,7 @@ def product_detail(product_id):
 
  
 
-        related_products = db.execute(
+    related_products = db.execute(
 
  
 
@@ -1394,11 +1393,8 @@ def product_detail(product_id):
  
 
         product=product,
-
- 
-
-        related_products=related_products
-
+related_products=related_products,
+product_images=product_images
  
 
     )
@@ -2199,20 +2195,6 @@ def admin_login():
 
     return render_template("admin/login.html")
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @app.route("/admin/logout")
 
  
@@ -2415,77 +2397,31 @@ def edit_product(product_id=None):
 
         image_name = existing["image"] if existing else ""
 
- 
+uploaded_images = [
+    img for img in request.files.getlist("images")
+    if img and img.filename
+]
 
- 
+if any(not allowed_file(img.filename) for img in uploaded_images):
+    flash("Only PNG, JPG, JPEG, WEBP or GIF images are allowed.", "error")
+    return render_template(
+        "admin/product_form.html",
+        product=existing,
+        editing=bool(existing)
+    )
 
- 
+saved_images = []
 
-        image = request.files.get("image")
+for img in uploaded_images:
+    filename = secure_filename(img.filename)
+    stem, ext = os.path.splitext(filename)
 
- 
+    unique_name = f"{stem[:50]}_{os.urandom(4).hex()}{ext.lower()}"
+    img.save(UPLOAD_DIR / unique_name)
+    saved_images.append(unique_name)
 
- 
-
- 
-
-        if image and image.filename:
-
- 
-
- 
-
- 
-
-            if not allowed_file(image.filename):
-
- 
-
- 
-
- 
-
-                flash("Image must be PNG, JPG, JPEG, WEBP or GIF.", "error")
-
- 
-
- 
-
- 
-
-                return render_template("admin/product_form.html", product=existing, editing=bool(existing))
-
- 
-
- 
-
- 
-
-            filename = secure_filename(image.filename)
-
- 
-
- 
-
- 
-
-            stem, ext = os.path.splitext(filename)
-
- 
-
- 
-
- 
-
-            image_name = f"{stem[:50]}_{os.urandom(4).hex()}{ext.lower()}"
-
- 
-
- 
-
- 
-
-            image.save(UPLOAD_DIR / image_name)
+if saved_images:
+    image_name = saved_images[0]
 
  
 
@@ -2566,52 +2502,47 @@ def edit_product(product_id=None):
  
 
         with get_db() as db:
+    if existing:
+        saved_product_id = product_id
 
+        db.execute("""
+            UPDATE products
+            SET name=?, category=?, price=?, old_price=?,
+                description=?, fabric=?, sizes=?, colours=?,
+                image=?, featured=?, active=?
+            WHERE id=?
+        """, values + (product_id,))
+
+    else:
+        cursor = db.execute("""
+            INSERT INTO products
+            (name, category, price, old_price, description, fabric,
+             sizes, colours, image, featured, active)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, values)
+
+        saved_product_id = cursor.lastrowid
+
+    for saved_image in saved_images:
+        db.execute("""
+            INSERT INTO product_images (product_id, image)
+            VALUES (?, ?)
+        """, (saved_product_id, saved_image))
  
 
- 
+ with get_db() as db:
+    if existing:
+        saved_product_id = product_id
+    else:
+        saved_product_id = db.execute(
+            "SELECT last_insert_rowid()"
+        ).fetchone()[0]
 
- 
-
-            if existing:
-
- 
-
- 
-
- 
-
-                db.execute("""UPDATE products SET name=?,category=?,price=?,old_price=?,description=?,fabric=?,sizes=?,colours=?,image=?,featured=?,active=? WHERE id=?""", values + (product_id,))
-
- 
-
- 
-
- 
-
-            else:
-
- 
-
- 
-
- 
-
-                db.execute("""INSERT INTO products (name,category,price,old_price,description,fabric,sizes,colours,image,featured,active)
-
- 
-
- 
-
- 
-
-                              VALUES (?,?,?,?,?,?,?,?,?,?,?)""", values)
-
- 
-
- 
-
- 
+    for saved_image in saved_images:
+        db.execute(
+            "INSERT INTO product_images (product_id, image) VALUES (?, ?)",
+            (saved_product_id, saved_image)
+        )
 
         flash("Product saved successfully.", "success")
 

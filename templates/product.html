@@ -713,7 +713,34 @@
 
 }
 
- 
+ .product-thumbnails {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.product-thumbnail {
+    width: 68px;
+    height: 78px;
+    padding: 3px;
+    border: 1px solid #dce7f5;
+    border-radius: 9px;
+    background: white;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.product-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.product-thumbnail:hover {
+    border: 2px solid #2875f0;
+}
 
 </style>
 
@@ -872,13 +899,20 @@
  
 
     {% endif %}
-
  
-
- 
-
- 
-
+{% if product_images %}
+<div class="product-thumbnails">
+    {% for photo in product_images %}
+    <button type="button"
+            class="product-thumbnail"
+            onclick="changeProductImage(this)"
+            data-image="{{ url_for('static', filename='uploads/' + photo.image) }}">
+        <img src="{{ url_for('static', filename='uploads/' + photo.image) }}"
+             alt="{{ product.name }} photo {{ loop.index }}">
+    </button>
+    {% endfor %}
+</div>
+{% endif %}
     {% if product.featured %}
 
  
@@ -1300,11 +1334,17 @@ ss
 
 </section>
 
+<script>
+function changeProductImage(button) {
+    const mainImage = document.querySelector(".premium-main-image");
+
+    if (mainImage) {
+        mainImage.src = button.dataset.image;
+    }
+}
+</script>
 {% endif %}
 
- 
-
- 
 
 <script>
 
