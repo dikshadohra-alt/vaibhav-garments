@@ -2637,3 +2637,20 @@ body {
         object-fit: cover;
     }
 }
+/* VAIBHAV GARMENTS - FORCE LIGHT MODE */
+:root,
+html {
+    color-scheme: only light !important;
+    background-color: #f4f8ff !important;
+}
+
+html,
+body {
+    background-color: #f4f8ff !important;
+    color: #17345c !important;
+}
+
+body,
+.page-shell {
+    color-scheme: only light !important;
+}
