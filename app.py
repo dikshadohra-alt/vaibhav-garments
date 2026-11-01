@@ -4396,113 +4396,20 @@ def edit_product(product_id=None):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             old_price = float(request.form.get("old_price", "0") or 0)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
         except ValueError:
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             price, old_price = -1, 0
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
         if not name or category not in ("Women", "Men", "Kids", "Beauty") or price < 0:
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
             flash("Enter a product name, valid category and valid price.", "error")
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             return render_template("admin/product_form.html", product=existing, editing=bool(existing))
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
         image_name = existing["image"] if existing else ""
 
@@ -4513,9 +4420,6 @@ def edit_product(product_id=None):
             if img and img.filename
 
         ]
-
- 
-
         if any(not allowed_file(img.filename) for img in uploaded_images):
 
             flash("Only PNG, JPG, JPEG, WEBP or GIF images are allowed.", "error")
@@ -4556,163 +4460,28 @@ def edit_product(product_id=None):
 
             image_name = saved_images[0]
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         values = (
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
             name, category, price, old_price,
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             request.form.get("description", "").strip(),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
             request.form.get("fabric", "").strip(),
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
-            request.form.get("sizes", "").strip(),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
+            request.form.get("sizes", "").strip(), 
 
             request.form.get("colours", "").strip(),
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
             image_name, 1 if request.form.get("featured") else 0,
 
  
-
- 
-
- 
-
- 
-
- 
-
- 
-
  
 
             1 if request.form.get("active") else 0
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
  
 
         )
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
         with get_db() as db:
 
@@ -4828,75 +4597,24 @@ def edit_product(product_id=None):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
+@app.route("/admin/product/<int:product_id>/delete", methods=["POST"])
+@admin_required
 def delete_product(product_id):
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
     with get_db() as db:
 
- 
+        db.execute(
+            "DELETE FROM product_images WHERE product_id = ?",
+            (product_id,)
+        )
 
- 
+        db.execute(
+            "DELETE FROM products WHERE id = ?",
+            (product_id,)
+        )
 
- 
-
- 
-
- 
-
- 
-
- 
-
-        db.execute("DELETE FROM products WHERE id=?", (product_id,))
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
-    flash("Product deleted.", "success")
-
- 
-
- 
-
- 
-
-    return redirect(url_for("admin_dashboard")) 
-
- 
+    flash("Product deleted successfully.", "success")
+    return redirect(url_for("admin_dashboard"))
 
 @app.route("/admin/settings", methods=["GET", "POST"])
 
@@ -5320,18 +5038,9 @@ def not_found(error):
 
   return render_template("404.html"), 404
 
- 
 
 init_db()
 
- 
-
- 
-
 if __name__ == "__main__":
-
- 
-
- 
 
     app.run(debug=os.environ.get("FLASK_DEBUG", "false").lower() == "true", host="0.0.0.0", port=int(os.environ.get("PORT", "5000")))
