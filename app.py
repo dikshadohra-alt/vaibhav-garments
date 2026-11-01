@@ -1,5 +1,7 @@
 from dataclasses import fields
 
+ 
+
 from itertools import product
 
  
@@ -28,19 +30,7 @@ from pathlib import Path
 
  
 
- 
-
- 
-
- 
-
- 
-
 from flask import Flask, render_template, request, redirect, url_for, session, flash, abort
-
- 
-
- 
 
  
 
@@ -48,15 +38,7 @@ from werkzeug.utils import secure_filename
 
  
 
- 
-
- 
-
 from werkzeug.security import generate_password_hash, check_password_hash
-
- 
-
- 
 
  
 
@@ -64,23 +46,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
  
 
- 
-
- 
-
 UPLOAD_DIR = BASE_DIR / "static" / "uploads"
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -88,23 +54,7 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
  
 
- 
-
- 
-
 app = Flask(__name__)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -112,51 +62,15 @@ app.secret_key = os.environ.get("SECRET_KEY", "change-this-secret-before-deploym
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 csrf = CSRFProtect(app)
+
+ 
 
 app.config["MAX_CONTENT_LENGTH"] = 40 * 1024 * 1024
 
+ 
+
 app.config["UPLOAD_FOLDER"] = str(UPLOAD_DIR)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -164,31 +78,7 @@ DB_PATH = os.environ.get("DATABASE_PATH", str(BASE_DIR / "store.db"))
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 WHATSAPP_NUMBER = os.environ.get("WHATSAPP_NUMBER", "7015769205")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -196,31 +86,7 @@ INSTAGRAM_URL = os.environ.get("INSTAGRAM_URL", "https://www.instagram.com/vaibh
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 SHOP_ADDRESS = os.environ.get("SHOP_ADDRESS", "Village Padha, Tehsil Assandh, District Karnal, Haryana - 132036")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -228,47 +94,7 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif"}
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 def get_db():
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -276,31 +102,7 @@ def get_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     conn.row_factory = sqlite3.Row
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -308,23 +110,7 @@ def get_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     return conn
-
- 
-
- 
 
  
 
@@ -332,31 +118,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     global WHATSAPP_NUMBER, INSTAGRAM_URL, SHOP_ADDRESS
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -364,47 +126,11 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         db.execute("""CREATE TABLE IF NOT EXISTS products (
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -412,31 +138,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             category TEXT NOT NULL CHECK(category IN ('Women','Men','Kids','Beauty')),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -444,31 +146,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             old_price REAL DEFAULT 0,
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -476,31 +154,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             fabric TEXT DEFAULT '',
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -508,31 +162,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             colours TEXT DEFAULT 'Blue, Black',
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -540,31 +170,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             featured INTEGER DEFAULT 0,
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -572,47 +178,11 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         )""")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -620,31 +190,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -652,31 +198,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             password_hash TEXT NOT NULL
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -684,31 +206,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         db.execute("""
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -716,31 +214,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 id INTEGER PRIMARY KEY CHECK (id = 1),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -748,31 +222,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 instagram_url TEXT NOT NULL DEFAULT '',
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -780,31 +230,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             )
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -812,31 +238,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         db.execute("""
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -844,31 +246,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             (id, whatsapp_number, instagram_url, shop_address)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -876,31 +254,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         """, (WHATSAPP_NUMBER, INSTAGRAM_URL, SHOP_ADDRESS))
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -908,47 +262,11 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "SELECT * FROM store_settings WHERE id = 1"
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         ).fetchone()
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -956,31 +274,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             WHATSAPP_NUMBER = saved_settings["whatsapp_number"]
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -988,31 +282,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             SHOP_ADDRESS = saved_settings["shop_address"]
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1020,31 +290,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         # SQLite cannot alter a CHECK constraint directly, so rebuild the table
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1052,31 +298,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         schema_row = db.execute(
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1084,31 +306,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         ).fetchone()
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1116,31 +314,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             db.execute("""
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1148,31 +322,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1180,31 +330,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                     category TEXT NOT NULL CHECK(category IN ('Women','Men','Kids','Beauty')),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1212,31 +338,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                     old_price REAL DEFAULT 0,
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1244,31 +346,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                     fabric TEXT DEFAULT '',
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1276,31 +354,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                     colours TEXT DEFAULT 'Blue, Black',
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1308,31 +362,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                     featured INTEGER DEFAULT 0,
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1340,31 +370,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1372,31 +378,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             """)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1404,31 +386,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 INSERT INTO products_new
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1436,31 +394,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                  sizes, colours, image, featured, active, created_at)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1468,31 +402,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                        sizes, colours, image, featured, active, created_at
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1500,35 +410,13 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             """)
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             db.execute("DROP TABLE products")
+
+ 
 
             db.execute("ALTER TABLE products_new RENAME TO products")
 
@@ -1536,19 +424,35 @@ def init_db():
 
         # Always create this table, whether or not the products migration ran.
 
+ 
+
         db.execute("""
+
+ 
 
             CREATE TABLE IF NOT EXISTS product_images (
 
+ 
+
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+ 
 
                 product_id INTEGER NOT NULL,
 
+ 
+
                 image TEXT NOT NULL,
+
+ 
 
                 FOREIGN KEY (product_id) REFERENCES products(id)
 
+ 
+
             )
+
+ 
 
         """)
 
@@ -1558,31 +462,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         if count == 0:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1590,31 +470,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             password = os.environ.get("ADMIN_PASSWORD", "ChangeMe123!")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1622,31 +478,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                        (username, generate_password_hash(password)))
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1654,31 +486,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         if products_count == 0:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1686,31 +494,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 ("Classic Casual Shirt", "Men", 799, 999, "Everyday comfort with a smart fit.", "Cotton blend", "M, L, XL, XXL", "White, Blue, Black", "", 1),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1718,31 +502,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 ("Kids Printed Outfit", "Kids", 599, 749, "A cheerful and comfortable outfit for kids.", "Cotton", "2-3Y, 4-5Y, 6-7Y, 8-9Y", "Blue, Yellow, Pink", "", 1),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1750,31 +510,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 ("Floral Dress", "Women", 999, 1299, "A fresh floral look for outings.", "Georgette", "S, M, L, XL", "Pink, Green, Black", "", 0),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1782,31 +518,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 ("Everyday Beauty Essentials", "Beauty", 499, 649, "Beauty essentials for your everyday routine.", "Cosmetics", "Standard", "Assorted", "", 0),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1814,31 +526,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             db.executemany("""INSERT INTO products
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1846,47 +534,7 @@ def init_db():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", samples)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1894,31 +542,7 @@ def admin_required(view):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     @wraps(view)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1926,31 +550,7 @@ def admin_required(view):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         if not session.get("admin_id"):
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1958,31 +558,7 @@ def admin_required(view):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         return view(*args, **kwargs)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -1990,47 +566,7 @@ def admin_required(view):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 def allowed_file(filename):
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2038,47 +574,7 @@ def allowed_file(filename):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @app.context_processor
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2086,31 +582,7 @@ def inject_globals():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     return {
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2118,31 +590,7 @@ def inject_globals():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         "whatsapp_number": WHATSAPP_NUMBER,
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2150,31 +598,7 @@ def inject_globals():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         "shop_address": SHOP_ADDRESS,
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2182,47 +606,7 @@ def inject_globals():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @app.route("/")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2230,31 +614,7 @@ def home():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     category = request.args.get("category", "").strip()
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2262,31 +622,7 @@ def home():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     with get_db() as db:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2294,31 +630,7 @@ def home():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         params = []
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2326,23 +638,7 @@ def home():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             sql += " AND category=?"
-
- 
-
- 
 
  
 
@@ -2350,31 +646,7 @@ def home():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         if search:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2382,31 +654,7 @@ def home():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             params.extend([f"%{search}%"] * 3)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2414,31 +662,7 @@ def home():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         products = db.execute(sql, params).fetchall()
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2446,61 +670,33 @@ def home():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     return render_template("home.html", products=products, featured=featured, selected_category=category, search=search)
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
 @app.route("/product/<int:product_id>")
 
+ 
+
 def product_detail(product_id):
+
+ 
 
     with get_db() as db:
 
+ 
+
         product = db.execute(
+
+ 
 
             "SELECT * FROM products WHERE id=? AND active=1",
 
+ 
+
             (product_id,)
+
+ 
 
         ).fetchone()
 
@@ -2508,17 +704,27 @@ def product_detail(product_id):
 
         if not product:
 
+ 
+
             abort(404)
 
  
 
         # Gallery images are optional, so older single-image products still work.
 
+ 
+
         product_images = db.execute(
+
+ 
 
             "SELECT image FROM product_images WHERE product_id=? ORDER BY id ASC",
 
+ 
+
             (product_id,)
+
+ 
 
         ).fetchall()
 
@@ -2526,15 +732,27 @@ def product_detail(product_id):
 
         related_products = db.execute(
 
+ 
+
             """SELECT * FROM products
+
+ 
 
                WHERE active=1 AND category=? AND id<>?
 
+ 
+
                ORDER BY featured DESC, id DESC
+
+ 
 
                LIMIT 8""",
 
+ 
+
             (product["category"], product_id)
+
+ 
 
         ).fetchall()
 
@@ -2542,17 +760,25 @@ def product_detail(product_id):
 
     return render_template(
 
+ 
+
         "product.html",
+
+ 
 
         product=product,
 
+ 
+
         related_products=related_products,
+
+ 
 
         product_images=product_images
 
-    )
-
  
+
+    )
 
  
 
@@ -2560,47 +786,11 @@ def product_detail(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     with get_db() as db:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2608,31 +798,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "SELECT * FROM products WHERE active=1 ORDER BY id DESC"
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2640,63 +806,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     wishlist_products = []
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2704,31 +814,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         wishlist_products.append({
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2736,31 +822,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "name": product["name"],
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2768,31 +830,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "price": product["price"],
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2800,31 +838,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 url_for("static", filename="uploads/" + product["image"])
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2832,31 +846,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             ),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2864,31 +854,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
                 "product_detail", product_id=product["id"]
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2896,31 +862,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "order_url": url_for(
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2928,31 +870,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             )
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -2960,47 +878,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     return render_template(
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3008,31 +886,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         wishlist_products=wishlist_products
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3040,47 +894,7 @@ def wishlist_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @app.route("/cart")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3088,63 +902,7 @@ def cart_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     return render_template("cart.html")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3152,31 +910,7 @@ def cart_page():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @csrf.exempt
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3184,31 +918,7 @@ def order_product(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     with get_db() as db:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3216,31 +926,7 @@ def order_product(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     if not product:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3248,31 +934,7 @@ def order_product(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     if request.method == "POST":
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3280,31 +942,7 @@ def order_product(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "name": request.form.get("name", "").strip(),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3312,31 +950,7 @@ def order_product(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "email": request.form.get("email", "").strip(),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3344,31 +958,7 @@ def order_product(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "city": request.form.get("city", "").strip(),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3376,31 +966,7 @@ def order_product(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "size": request.form.get("size", "").strip(),
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3408,21 +974,7 @@ def order_product(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             "fabric": request.form.get("fabric", "").strip() or product["fabric"],
-
- 
 
  
 
@@ -3438,9 +990,9 @@ def order_product(product_id):
 
  
 
- 
-
         # Size and colour are required only when the product has those options
+
+ 
 
         required_fields = ["name", "mobile", "address", "city", "pincode"]
 
@@ -3448,11 +1000,19 @@ def order_product(product_id):
 
         available_sizes = [
 
+ 
+
             s.strip()
+
+ 
 
             for s in (product["sizes"] or "").split(",")
 
+ 
+
             if s.strip()
+
+ 
 
         ]
 
@@ -3460,11 +1020,19 @@ def order_product(product_id):
 
         available_colours = [
 
+ 
+
             c.strip()
+
+ 
 
             for c in (product["colours"] or "").split(",")
 
+ 
+
             if c.strip()
+
+ 
 
         ]
 
@@ -3472,9 +1040,15 @@ def order_product(product_id):
 
         if available_sizes:
 
+ 
+
             required_fields.append("size")
 
+ 
+
         else:
+
+ 
 
             fields["size"] = "Not applicable"
 
@@ -3482,9 +1056,15 @@ def order_product(product_id):
 
         if available_colours:
 
+ 
+
             required_fields.append("colour")
 
+ 
+
         else:
+
+ 
 
             fields["colour"] = "Not applicable"
 
@@ -3492,17 +1072,17 @@ def order_product(product_id):
 
         if not all(fields.get(k) for k in required_fields):
 
+ 
+
             flash("Please fill in all required fields.", "error")
+
+ 
 
             return render_template("order.html", product=product, form=fields)
 
  
 
- 
-
         try:
-
- 
 
  
 
@@ -3530,8 +1110,6 @@ def order_product(product_id):
 
  
 
- 
-
         message = (
 
  
@@ -3548,43 +1126,19 @@ def order_product(product_id):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             f"Price: Rs. {float(product['price']):.2f}\nQuantity: {qty}\n"
-
- 
-
- 
 
  
 
            f"Size: {fields.get('size') or 'Not applicable'}\n"
 
+ 
+
 f"Colour: {fields.get('colour') or 'Not applicable'}\n"
 
+ 
+
 f"Fabric: {fields.get('fabric') or 'Not specified'}\n"
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3592,31 +1146,7 @@ f"Fabric: {fields.get('fabric') or 'Not specified'}\n"
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             f"Customer name: {fields['name']}\nMobile/WhatsApp: {fields['mobile']}\n"
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3624,31 +1154,7 @@ f"Fabric: {fields.get('fabric') or 'Not specified'}\n"
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             f"Delivery address: {fields['address']}\nCity: {fields['city']}\nPincode: {fields['pincode']}\n"
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3656,31 +1162,7 @@ f"Fabric: {fields.get('fabric') or 'Not specified'}\n"
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         )
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3688,47 +1170,7 @@ f"Fabric: {fields.get('fabric') or 'Not specified'}\n"
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     return render_template("order.html", product=product, form={})
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3736,31 +1178,7 @@ f"Fabric: {fields.get('fabric') or 'Not specified'}\n"
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @admin_required
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3768,31 +1186,7 @@ def admin_dashboard():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     with get_db() as db:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3800,31 +1194,7 @@ def admin_dashboard():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         active_count = db.execute("SELECT COUNT(*) AS n FROM products WHERE active=1").fetchone()["n"]
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3832,47 +1202,7 @@ def admin_dashboard():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @app.route("/admin/login", methods=["GET", "POST"])
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3880,31 +1210,7 @@ def admin_login():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     if session.get("admin_id"):
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3912,31 +1218,7 @@ def admin_login():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     if request.method == "POST":
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3944,31 +1226,7 @@ def admin_login():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         password = request.form.get("password", "")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -3976,31 +1234,7 @@ def admin_login():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             admin = db.execute("SELECT * FROM admin_users WHERE username=?", (username,)).fetchone()
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4008,31 +1242,7 @@ def admin_login():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             session.clear()
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4040,31 +1250,7 @@ def admin_login():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
             session["admin_username"] = admin["username"]
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4072,31 +1258,7 @@ def admin_login():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         flash("Incorrect username or password.", "error")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4108,31 +1270,7 @@ def admin_login():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 def admin_logout():
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4140,31 +1278,7 @@ def admin_logout():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     flash("You have been logged out.", "success")
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4172,47 +1286,7 @@ def admin_logout():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @app.route("/admin/product/new", methods=["GET", "POST"])
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4220,31 +1294,7 @@ def admin_logout():
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @admin_required
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4252,31 +1302,7 @@ def edit_product(product_id=None):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     with get_db() as db:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4284,31 +1310,7 @@ def edit_product(product_id=None):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     if product_id and not existing:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4316,31 +1318,7 @@ def edit_product(product_id=None):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
     if request.method == "POST":
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4348,47 +1326,11 @@ def edit_product(product_id=None):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         category = request.form.get("category", "")
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
         try:
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
  
 
@@ -4402,35 +1344,65 @@ def edit_product(product_id=None):
 
         except ValueError:
 
+ 
+
             price, old_price = -1, 0
+
+ 
 
         if not name or category not in ("Women", "Men", "Kids", "Beauty") or price < 0:
 
+ 
 
             flash("Enter a product name, valid category and valid price.", "error")
 
+ 
+
             return render_template("admin/product_form.html", product=existing, editing=bool(existing))
+
+ 
 
         image_name = existing["image"] if existing else ""
 
+ 
+
         uploaded_images = [
+
+ 
 
             img for img in request.files.getlist("images")
 
+ 
+
             if img and img.filename
 
+ 
+
         ]
+
         if any(not allowed_file(img.filename) for img in uploaded_images):
+
+ 
 
             flash("Only PNG, JPG, JPEG, WEBP or GIF images are allowed.", "error")
 
+ 
+
             return render_template(
+
+ 
 
                 "admin/product_form.html",
 
+ 
+
                 product=existing,
 
+ 
+
                 editing=bool(existing)
+
+ 
 
             )
 
@@ -4442,7 +1414,11 @@ def edit_product(product_id=None):
 
         for img in uploaded_images:
 
+ 
+
             filename = secure_filename(img.filename)
+
+ 
 
             stem, ext = os.path.splitext(filename)
 
@@ -4450,7 +1426,11 @@ def edit_product(product_id=None):
 
             unique_name = f"{stem[:50]}_{os.urandom(4).hex()}{ext.lower()}"
 
+ 
+
             img.save(UPLOAD_DIR / unique_name)
+
+ 
 
             saved_images.append(unique_name)
 
@@ -4458,34 +1438,55 @@ def edit_product(product_id=None):
 
         if saved_images:
 
+ 
+
             image_name = saved_images[0]
+
+ 
 
         values = (
 
+ 
+
             name, category, price, old_price,
+
+ 
 
             request.form.get("description", "").strip(),
 
+ 
+
             request.form.get("fabric", "").strip(),
 
-            request.form.get("sizes", "").strip(), 
+ 
+
+            request.form.get("sizes", "").strip(),
+
+ 
 
             request.form.get("colours", "").strip(),
 
+ 
 
             image_name, 1 if request.form.get("featured") else 0,
 
  
- 
 
             1 if request.form.get("active") else 0
+
  
 
         )
 
+ 
+
         with get_db() as db:
 
+ 
+
             if existing:
+
+ 
 
                 saved_product_id = product_id
 
@@ -4493,29 +1494,55 @@ def edit_product(product_id=None):
 
                 db.execute("""
 
+ 
+
                     UPDATE products
+
+ 
 
                     SET name=?, category=?, price=?, old_price=?,
 
+ 
+
                         description=?, fabric=?, sizes=?, colours=?,
+
+ 
 
                         image=?, featured=?, active=?
 
+ 
+
                     WHERE id=?
+
+ 
 
                 """, values + (product_id,))
 
+ 
+
             else:
+
+ 
 
                 cursor = db.execute("""
 
+ 
+
                     INSERT INTO products
+
+ 
 
                     (name, category, price, old_price, description, fabric,
 
+ 
+
                      sizes, colours, image, featured, active)
 
+ 
+
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+ 
 
                 """, values)
 
@@ -4527,17 +1554,27 @@ def edit_product(product_id=None):
 
             for saved_image in saved_images:
 
+ 
+
                 db.execute("""
+
+ 
 
                     INSERT INTO product_images (product_id, image)
 
+ 
+
                     VALUES (?, ?)
+
+ 
 
                 """, (saved_product_id, saved_image))
 
  
 
         flash("Product saved successfully.", "success")
+
+ 
 
         return redirect(url_for("admin_dashboard"))
 
@@ -4547,74 +1584,43 @@ def edit_product(product_id=None):
 
  
 
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
 @app.route("/admin/product/<int:product_id>/delete", methods=["POST"])
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
-
- 
 
 @admin_required
 
- 
-
- 
-
-@app.route("/admin/product/<int:product_id>/delete", methods=["POST"])
-@admin_required
 def delete_product(product_id):
+
+ 
 
     with get_db() as db:
 
-        db.execute(
-            "DELETE FROM product_images WHERE product_id = ?",
-            (product_id,)
-        )
+ 
 
         db.execute(
-            "DELETE FROM products WHERE id = ?",
+
+            "DELETE FROM product_images WHERE product_id = ?",
+
             (product_id,)
+
         )
+
+ 
+
+        db.execute(
+
+            "DELETE FROM products WHERE id = ?",
+
+            (product_id,)
+
+        )
+
+ 
 
     flash("Product deleted successfully.", "success")
+
     return redirect(url_for("admin_dashboard"))
+
+ 
 
 @app.route("/admin/settings", methods=["GET", "POST"])
 
@@ -4624,11 +1630,7 @@ def delete_product(product_id):
 
  
 
- 
-
 def admin_settings():
-
- 
 
  
 
@@ -4636,17 +1638,7 @@ def admin_settings():
 
  
 
- 
-
- 
-
- 
-
     if request.method == "POST":
-
- 
-
- 
 
  
 
@@ -4654,11 +1646,7 @@ def admin_settings():
 
  
 
- 
-
         instagram = request.form.get("instagram_url", "").strip()
-
- 
 
  
 
@@ -4666,21 +1654,7 @@ def admin_settings():
 
  
 
- 
-
- 
-
- 
-
- 
-
         if not whatsapp or len(whatsapp) > 20:
-
- 
-
- 
-
- 
 
  
 
@@ -4688,15 +1662,7 @@ def admin_settings():
 
  
 
- 
-
- 
-
             return redirect(url_for("admin_settings"))
-
- 
-
- 
 
  
 
@@ -4704,11 +1670,7 @@ def admin_settings():
 
  
 
- 
-
             flash("Instagram URL or shop address is too long.", "error")
-
- 
 
  
 
@@ -4716,11 +1678,7 @@ def admin_settings():
 
  
 
- 
-
         if instagram and not instagram.startswith("https://"):
-
- 
 
  
 
@@ -4730,11 +1688,15 @@ def admin_settings():
 
             return redirect(url_for("admin_settings"))
 
+ 
+
         with get_db() as db:
 
  
 
             db.execute("""
+
+ 
 
                 UPDATE store_settings
 
@@ -4745,6 +1707,8 @@ def admin_settings():
  
 
                 WHERE id = 1
+
+ 
 
             """, (whatsapp, instagram, address))
 
@@ -4774,11 +1738,7 @@ def admin_settings():
 
  
 
- 
-
         settings = db.execute(
-
- 
 
  
 
@@ -4798,13 +1758,7 @@ def admin_settings():
 
  
 
- 
-
         INSTAGRAM_URL = settings["instagram_url"]
-
- 
-
- 
 
  
 
@@ -4812,11 +1766,7 @@ def admin_settings():
 
  
 
- 
-
     return render_template(
-
- 
 
  
 
@@ -4836,13 +1786,7 @@ def admin_settings():
 
  
 
- 
-
     )
-
- 
-
- 
 
  
 
@@ -4874,10 +1818,6 @@ def admin_change_password():
 
  
 
- 
-
- 
-
     if not current_password or not new_password or not confirm_password:
 
  
@@ -4887,10 +1827,6 @@ def admin_change_password():
  
 
         return redirect(url_for("admin_settings"))
-
- 
-
- 
 
  
 
@@ -4906,10 +1842,6 @@ def admin_change_password():
 
  
 
- 
-
- 
-
     if len(new_password) > 128:
 
  
@@ -4922,10 +1854,6 @@ def admin_change_password():
 
  
 
- 
-
- 
-
     if new_password != confirm_password:
 
  
@@ -4935,10 +1863,6 @@ def admin_change_password():
  
 
         return redirect(url_for("admin_settings"))
-
- 
-
- 
 
  
 
@@ -4962,10 +1886,6 @@ def admin_change_password():
 
  
 
- 
-
- 
-
         if not admin or not check_password_hash(admin["password_hash"], current_password):
 
  
@@ -4978,10 +1898,6 @@ def admin_change_password():
 
  
 
- 
-
- 
-
         if check_password_hash(admin["password_hash"], new_password):
 
  
@@ -4991,10 +1907,6 @@ def admin_change_password():
  
 
             return redirect(url_for("admin_settings"))
-
- 
-
- 
 
  
 
@@ -5014,17 +1926,11 @@ def admin_change_password():
 
  
 
- 
-
- 
-
     flash("Admin password changed successfully. Use the new password next time you log in.", "success")
 
  
 
     return redirect(url_for("admin_settings"))
-
- 
 
  
 
@@ -5038,9 +1944,15 @@ def not_found(error):
 
   return render_template("404.html"), 404
 
+ 
 
 init_db()
 
+ 
+
 if __name__ == "__main__":
 
+ 
+
     app.run(debug=os.environ.get("FLASK_DEBUG", "false").lower() == "true", host="0.0.0.0", port=int(os.environ.get("PORT", "5000")))
+
